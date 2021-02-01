@@ -82,3 +82,7 @@ def mode(ndarray, axis=0):
     index = np.ogrid[slices]
     index.insert(axis, np.argmax(counts, axis=axis))
     return sort[index], counts[index]
+
+class Msg:
+    def __init__(self, content):
+        self.content = content

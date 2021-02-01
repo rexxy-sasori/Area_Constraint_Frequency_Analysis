@@ -1,4 +1,5 @@
 import json
+import pickle
 import socket
 import threading
 import time
@@ -35,15 +36,6 @@ class QueryThread(threading.Thread):
         self.host = host
         self.port = port
         self.time_cost = -1.0  # record time cost for single thread
-        self.func_args_dict = {}
-
-    def encode_data(self):
-        for idx, func_arg in enumerate(self.func_args):
-            self.func_args_dict[idx] = {
-                'template': func_arg[0].__dict__,
-                'hyper_param': func_arg[1].__dict__
-            }
-
 
     def run(self):
         """
@@ -52,9 +44,7 @@ class QueryThread(threading.Thread):
         """
         logs = []  # the result of query
 
-        d = {
-            'load': self.func_args_dict
-        }  # pattern json format
+        d = pickle.dumps(self.func_args)
 
         # do the query for each host
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -68,30 +58,13 @@ class QueryThread(threading.Thread):
 
                 # receive return results
                 while True:
-                    data = b''
-                    # declare the barrier here
-                    # only process after receiving all returned data
-                    while True:
-                        temp = s.recv(4096)
-                        if temp:
-                            data += temp
-                        else:
-                            break
+                    data = s.recv(4096)
                     if data:
-                        res = json.loads(data.decode('utf-8'))
-                        logs += res
+                        msg = pickle.loads(data)
+                        print('[INFO] query returns, result: ', msg.content)
                     else:
                         break
 
-                if logs:
-                    with open('%s.temp' % self.host, 'w') as f:
-                        for log in logs:
-                            line = ' '.join([log.get('host', '#'),
-                                             log.get('port', '#'),
-                                             log.get('log_path', '#'),
-                                             str(log.get('line_number', -1)),
-                                             log.get('content', '#')])
-                            f.write(line)
                 t_end = time.time()
                 self.time_cost = t_end - t_start
 
@@ -125,10 +98,6 @@ class Client:
         for idx, total_arg in enumerate(total_args):
             dst_worker_idx = idx % num_hosts
             workers[dst_worker_idx].func_args.append(total_arg)
-
-        print('[INFO] Encode search_space to JSON data')
-        for worker in workers:
-            worker.encode_data()
 
         print('[INFO] Start sending parameters ...')
 

@@ -1,8 +1,8 @@
 # Echo server program
-import json
-import os
-import re
+import pickle
 import socket
+
+from core.utils import Msg
 
 # hard code hosts' (VMs') ip and port here
 # todo: use config file instead
@@ -20,11 +20,6 @@ class Server:
         """
         self.host = host
         self.port = port
-        self.log_path = ''
-        root = '/home/wenhans2'
-        for file in os.listdir(root):
-            if file.endswith('.log'):
-                self.log_path = os.path.join(root, file)
 
     def run(self):
         """
@@ -38,30 +33,14 @@ class Server:
                 print('[INFO]: Waiting for connection ...')
                 conn, addr = s.accept()
                 with conn:
-                    print('[INFO]: Connected by', addr)
-
-                    # receive the pattern and process data
+                    print('[INFO]: Connected by', addr, ' on ', socket.gethostname())
                     try:
-                        data = conn.recv(1024)
+                        data = conn.recv(4096)
                         if data:
-                            pattern = json.loads(data.decode('utf-8'))['pattern']
-                            cnt = 0  # line number counter
-                            buffer = []  # store all the matched results
-                            with open(self.log_path, 'r') as f:
-                                for line in f:
-                                    cnt += 1
-                                    if re.search(pattern, line):
-                                        buffer.append({
-                                            'log_path': self.log_path,
-                                            'host': self.host,
-                                            'port': str(self.port),
-                                            'line_number': cnt,
-                                            'content': line,
-                                        })  # json format for returning the matched log results
-                            # return the results to the client
-                            if buffer:
-                                data = json.dumps(buffer).encode('utf-8')
-                                conn.sendall(data)
+                            func_args = pickle.loads(data)
+                            print('[INFO] Receiver {} search arguments for simulation'.format(len(func_args)))
+                            data = pickle.dumps(Msg('DONE'))
+                            conn.sendall(data)
 
                     except Exception as e:
                         print('[ERROR]:', e.__str__())
