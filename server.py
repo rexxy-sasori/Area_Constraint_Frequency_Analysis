@@ -19,6 +19,7 @@ class ServerProtocol:
     def handle_data(self):
         try:
             while True:
+                print('[INFO]: Waiting for connection ...')
                 (connection, addr) = self.socket.accept()
                 try:
                     bs = connection.recv(8)

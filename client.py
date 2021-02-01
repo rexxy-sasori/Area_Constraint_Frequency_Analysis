@@ -46,7 +46,7 @@ class QueryThread(threading.Thread):
         logs = []  # the result of query
 
         # do the query for each host
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        with socket(AF_INET, SOCK_STREAM) as s:
             try:
                 t_start = time.time()
                 s.connect((self.host, self.port))
@@ -69,16 +69,18 @@ class QueryThread(threading.Thread):
                 self.time_cost = t_end - t_start
 
             # handle the client exception
-            except (OSError, socket.error) as e:
+            except (OSError, error) as e:
                 print('[ERROR]: ', self.host, e.__class__().__str__(), e.__str__())
 
 
-class ClientProtocol:
+class ClientProtocol(threading.Thread):
     def __init__(self, host,port):
+        super(ClientProtocol, self).__init__()
         self.socket = None
         self.host = host
         self.port = port
         self.func_args = []
+        self.time_cost = -1
 
     def connect(self):
         self.socket = socket(AF_INET, SOCK_STREAM)
@@ -98,6 +100,16 @@ class ClientProtocol:
         self.socket.sendall(length)
         self.socket.sendall(data)
 
+    def run(self):
+        try:
+            t_start = time.time()
+            self.connect()
+            self.send_dat()
+            t_end = time.time()
+            self.time_cost = t_end - t_start
+        except (OSError, error) as e:
+            print('[ERROR]: ', self.host, e.__class__().__str__(), e.__str__())
+
 
 class Client:
     def __init__(self, hosts=HOSTS, port=PORT):
@@ -116,7 +128,7 @@ class Client:
         d_time = {}  # record time cost for each thread
 
         # assert worker for each query
-        workers = [QueryThread(host, PORT) for host in HOSTS]
+        workers = [ClientProtocol(host, PORT) for host in HOSTS]
         num_hosts = len(HOSTS)
 
         print('[INFO] Assign search_space to {} machines'.format(num_hosts))
