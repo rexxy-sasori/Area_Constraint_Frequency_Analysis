@@ -37,6 +37,7 @@ class Server:
                         data = b""
                         while True:
                             temp = conn.recv(4096)
+                            print(type(temp))
                             if temp:
                                 print('[INFO] Received {} bytes'.format(len(temp)))
                                 data += temp
