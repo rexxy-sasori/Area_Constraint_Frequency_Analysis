@@ -16,8 +16,8 @@ dirs = {
 
 color = {
     'DFT': u'#1f77b4',
-    'DHT': u'#ff7f0e',
-    'J-DHT':u'#2ca02c',
+    'DHT': u'#2ca02c',
+    'J-DHT':u'#ff7f0e',
     'D-DHT': 'indigo'
 }
 
