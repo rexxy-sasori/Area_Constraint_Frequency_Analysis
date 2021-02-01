@@ -8,6 +8,7 @@ import sys
 # todo: use config file instead
 HOST = socket.gethostname()
 PORT = 55558
+import json
 
 class Server:
     def __init__(self, host=HOST, port=PORT):
@@ -37,7 +38,7 @@ class Server:
                         data = b""
                         while True:
                             temp = conn.recv(4096)
-                            if temp:
+                            if len(temp) > 0:
                                 data += temp
                                 print('[INFO] Received {} bytes, totaling {}'.format(len(temp), len(data)))
                             else:
