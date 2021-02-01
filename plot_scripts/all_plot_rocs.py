@@ -69,5 +69,10 @@ def plot_auc_roc_single_experiment(result_dir, identifier='*tar'):
 if __name__ == '__main__':
     result_dirs = glob.glob('/home/hgeng4/pmsp/results/*/*/*/*/*/*')
     for result_dir in result_dirs:
+        if 'noise_level_0' in result_dir:
+            continue
+        if 'noise_level_0.1' in result_dir:
+            continue
+
         print('plotting results in {}'.format(result_dir))
         plot_auc_roc_single_experiment(result_dir, '*tar')
