@@ -38,7 +38,7 @@ class Server:
                         while True:
                             temp = conn.recv(4096)
                             if temp:
-                                print('[INFO] Received {} bytes, totaling'.format(len(temp),len(data)))
+                                print('[INFO] Received {} bytes, totaling {}'.format(len(temp),len(data)))
                                 data += temp
                             else:
                                 print('exiting')
