@@ -1,9 +1,13 @@
 import glob
 import os
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
+import time
+from multiprocessing import Pool
+from tqdm import tqdm
 
 
 def plot_roc_area(results, roc_name, auc_name):
@@ -42,12 +46,19 @@ def plot_roc_area(results, roc_name, auc_name):
     plt.close()
 
 
-def plot_auc_roc_single_experiment(result_dir, identifier='*tar'):
-    results_identifier = os.path.join(result_dir, identifier)
+def plot_auc_roc_single_experiment(result_dir):
+    if 'noise_level_0' in result_dir:
+        return
+    if 'noise_level_0.1' in result_dir:
+        return
+
+    results_identifier = os.path.join(result_dir, '*tar')
     result_paths = glob.glob(results_identifier)
 
     if len(result_paths) != 101:
         return
+
+    print('working on dir: ', result_dir)
 
     plot_dir = os.path.join('/home/hgeng4/pmsp/plots', '/'.join(result_dir.lstrip('../').split('/')[1::]))
 
@@ -68,11 +79,20 @@ def plot_auc_roc_single_experiment(result_dir, identifier='*tar'):
 
 if __name__ == '__main__':
     result_dirs = glob.glob('/home/hgeng4/pmsp/results/*/*/*/*/*/*')
-    for result_dir in result_dirs:
-        if 'noise_level_0' in result_dir:
-            continue
-        if 'noise_level_0.1' in result_dir:
-            continue
+    # for result_dir in result_dirs:
+    #     if 'noise_level_0' in result_dir:
+    #         continue
+    #     if 'noise_level_0.1' in result_dir:
+    #         continue
+    #
+    #     print('plotting results in {}'.format(result_dir))
+    #     plot_auc_roc_single_experiment(result_dir, '*tar')
 
-        print('plotting results in {}'.format(result_dir))
-        plot_auc_roc_single_experiment(result_dir, '*tar')
+    pool = Pool(processes=16)
+    s = time.time()
+    print('staring at', datetime.now())
+    for _ in tqdm(pool.map(plot_auc_roc_single_experiment, result_dirs), total=len(result_dirs)):
+        pass
+    e = time.time()
+    print('end at', datetime.now())
+    print('total time in second:', e - s)
