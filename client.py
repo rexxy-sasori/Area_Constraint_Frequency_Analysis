@@ -93,6 +93,8 @@ class ClientProtocol(threading.Thread):
 
     def send_data(self):
         data = pickle.dumps(self.func_args)
+        with open(self.host+"_send_test.txt", "wb") as fp:  # Pickling
+            pickle.dump(data, fp)
         # use struct to make sure we have a consistent endianness on the length
         length = pack('>Q', len(data))
 

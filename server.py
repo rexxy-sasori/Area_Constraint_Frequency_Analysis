@@ -32,7 +32,9 @@ class ServerProtocol:
                             4096 if to_read > 4096 else to_read)
 
                     arguments = pickle.loads(data)
-                    print('[INFO] Received {} arguments for simulation'.format(len(arguments)))
+                    print('[INFO]: Received {} arguments for simulation'.format(len(arguments)))
+                    with open("receiver_test.txt", "wb") as fp:  # Pickling
+                        pickle.dump(data, fp)
 
                     # send our 0 ack
                     assert len(b'\00') == 1
