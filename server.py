@@ -25,8 +25,6 @@ class Server:
         Run a server, to receive the query pattern from clients and return log data.
         :return: None
         """
-        logs = []  # the
-
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((self.host, self.port))
             s.listen(1)
@@ -36,23 +34,21 @@ class Server:
                 with conn:
                     print('[INFO]: Connected by', addr, ' on ', socket.gethostname())
                     try:
+                        data = b""
                         while True:
-                            data = b''
-                            while True:
-                                temp = s.recv(4096)
-                                if temp:
-                                    data += temp
-                                else:
-                                    break
-                            if data:
-                                if data:
-                                    func_args = pickle.loads(data)
-                                    print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
-                                    data = pickle.dumps(Msg('DONE'))
-                                    conn.sendall(data)
+                            temp = conn.recv(4096)
+                            if temp:
+                                print('[INFO] Received {} bytes'.format(sys.getsizeof(temp)))
+                                data += temp
                             else:
+                                print('exiting')
                                 break
-                        print('OUT !!!')
+
+                        if data:
+                            func_args = pickle.loads(data)
+                            print('[INFO] Receiver {} search arguments for simulation'.format(len(func_args)))
+                            data = pickle.dumps(Msg('DONE'))
+                            conn.sendall(data)
 
                     except Exception as e:
                         print('[ERROR]:', e.__str__())
