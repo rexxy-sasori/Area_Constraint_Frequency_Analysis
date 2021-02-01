@@ -47,7 +47,7 @@ class ServerProtocol:
 
                     print('[INFO]: Starting simulations ...')
 
-                    pool = Pool(processes=6)
+                    pool = Pool(processes=4)
                     starting = datetime.now()
                     print('staring at', starting)
                     for _ in tqdm(pool.map(multi_run_wrapper, arguments), total=len(arguments)):
