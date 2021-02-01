@@ -60,5 +60,5 @@ class ServerProtocol:
 
 if __name__ == '__main__':
     sp = ServerProtocol()
-    sp.listen('127.0.0.1', 55558)
+    sp.listen(gethostname(), 55558)
     sp.handle_data()
