@@ -1,8 +1,9 @@
-import json
 import pickle
 import socket
 import threading
 import time
+from socket import *
+from struct import pack
 
 from IO import config
 
@@ -70,6 +71,32 @@ class QueryThread(threading.Thread):
             # handle the client exception
             except (OSError, socket.error) as e:
                 print('[ERROR]: ', self.host, e.__class__().__str__(), e.__str__())
+
+
+class ClientProtocol:
+    def __init__(self, host,port):
+        self.socket = None
+        self.host = host
+        self.port = port
+        self.func_args = []
+
+    def connect(self):
+        self.socket = socket(AF_INET, SOCK_STREAM)
+        self.socket.connect((self.host, self.port))
+
+    def close(self):
+        self.socket.shutdown(socket.SHUT_WR)
+        self.socket.close()
+        self.socket = None
+
+    def send_dat(self):
+        data = pickle.dumps(self.func_args)
+        # use struct to make sure we have a consistent endianness on the length
+        length = pack('>Q', len(data))
+
+        # sendall to make sure it blocks if there's back-pressure on the socket
+        self.socket.sendall(length)
+        self.socket.sendall(data)
 
 
 class Client:

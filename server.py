@@ -1,63 +1,63 @@
-# Echo server program
+import os
 import pickle
-import socket
+from socket import *
+from struct import unpack
 
-from core.utils import Msg
-import sys
-# hard code hosts' (VMs') ip and port here
-# todo: use config file instead
-HOST = socket.gethostname()
-PORT = 55558
-import json
 
-class Server:
-    def __init__(self, host=HOST, port=PORT):
-        """
-        Server initialization.
-        Make sure the server has already known the .log file.
-        :param host: server host
-        :param port: server post
-        """
-        self.host = host
-        self.port = port
+class ServerProtocol:
 
-    def run(self):
-        """
-        Run a server, to receive the query pattern from clients and return log data.
-        :return: None
-        """
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind((self.host, self.port))
-            s.listen(1)
+    def __init__(self):
+        self.socket = None
+        self.output_dir = '.'
+        self.file_num = 1
+
+    def listen(self, server_ip, server_port):
+        self.socket = socket(AF_INET, SOCK_STREAM)
+        self.socket.bind((server_ip, server_port))
+        self.socket.listen(1)
+
+    def handle_data(self):
+        try:
             while True:
-                print('[INFO]: Waiting for connection ...')
-                conn, addr = s.accept()
-                with conn:
-                    print('[INFO]: Connected by', addr, ' on ', socket.gethostname())
-                    try:
-                        # data = b""
-                        # while True:
-                        #     temp = conn.recv(4096,socket.MSG_WAITALL)
-                        #     if not temp:
-                        #         break
-                        #     data += temp
-                        #     print('[INFO] Received {} bytes, totalling {} bytes'.format(len(temp), len(data)))
-                        data = []
-                        while True:
-                            packet = conn.recv(4096)
-                            if not packet: break
-                            data.append(packet)
+                (connection, addr) = self.socket.accept()
+                try:
+                    bs = connection.recv(8)
+                    (length,) = unpack('>Q', bs)
+                    data = b''
+                    while len(data) < length:
+                        # doing it in batches is generally better than trying
+                        # to do it all in one go, so I believe.
+                        to_read = length - len(data)
+                        data += connection.recv(
+                            4096 if to_read > 4096 else to_read)
 
-                        if data:
-                            func_args = pickle.loads(b"".join(data))
-                            print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
-                            data = pickle.dumps(Msg('DONE'))
-                            conn.sendall(data)
+                    arguments = pickle.loads(data)
+                    print('[INFO] Received {} arguments for simulation'.format(len(arguments)))
 
-                    except Exception as e:
-                        print('[ERROR]:', e.__str__())
+                    # send our 0 ack
+                    assert len(b'\00') == 1
+                    connection.sendall(b'\00')
+                finally:
+                    connection.shutdown(SHUT_WR)
+                    connection.close()
+
+                with open(os.path.join(
+                        self.output_dir, '%06d.jpg' % self.file_num), 'w'
+                ) as fp:
+                    fp.write(data)
+
+                self.file_num += 1
+        finally:
+            self.close()
+
+    def close(self):
+        self.socket.close()
+        self.socket = None
+
+        # could handle a bad ack here, but we'll assume it's fine.
 
 
 if __name__ == '__main__':
-    s = Server()
-    s.run()
+    sp = ServerProtocol()
+    sp.listen('127.0.0.1', 55558)
+    sp.handle_data()
