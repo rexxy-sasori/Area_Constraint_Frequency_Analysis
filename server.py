@@ -35,14 +35,14 @@ class Server:
                 with conn:
                     print('[INFO]: Connected by', addr, ' on ', socket.gethostname())
                     try:
-                        data = b""
-                        while True:
-                            temp = conn.recv(4096)
-                            if not temp:
-                                break
-                            data += temp
-                            print('[INFO] Received {} bytes, totalling {} bytes'.format(len(temp), len(data)))
-
+                        # data = b""
+                        # while True:
+                        #     temp = conn.recv(4096,socket.MSG_WAITALL)
+                        #     if not temp:
+                        #         break
+                        #     data += temp
+                        #     print('[INFO] Received {} bytes, totalling {} bytes'.format(len(temp), len(data)))
+                        data = conn.recv(4096,socket.MSG_WAITALL)
                         if data:
                             func_args = pickle.loads(data)
                             print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))

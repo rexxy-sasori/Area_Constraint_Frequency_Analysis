@@ -57,7 +57,7 @@ class QueryThread(threading.Thread):
 
                 # receive return results
                 while True:
-                    data = s.recv(4096,socket.MSG_WAITALL)
+                    data = s.recv(4096)
                     if data:
                         msg = pickle.loads(data)
                         print('[INFO] query returns, result: ', msg.content)
