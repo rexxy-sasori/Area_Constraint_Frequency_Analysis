@@ -46,7 +46,10 @@ def plot_auc_roc_single_experiment(result_dir, identifier='*tar'):
     results_identifier = os.path.join(result_dir, identifier)
     result_paths = glob.glob(results_identifier)
 
-    plot_dir = os.path.join('../plots', '/'.join(result_dir.lstrip('../').split('/')[1::]))
+    if len(result_paths) != 101:
+        return
+
+    plot_dir = os.path.join('/home/hgeng4/pmsp/plots', '/'.join(result_dir.lstrip('../').split('/')[1::]))
 
     if not os.path.exists(plot_dir):
         os.makedirs(plot_dir)
@@ -64,7 +67,7 @@ def plot_auc_roc_single_experiment(result_dir, identifier='*tar'):
 
 
 if __name__ == '__main__':
-    result_dirs = glob.glob('../results/*/*/*/*/*')
+    result_dirs = glob.glob('/home/hgeng4/pmsp/results/*/*/*/*/*/*')
     for result_dir in result_dirs:
         print('plotting results in {}'.format(result_dir))
         plot_auc_roc_single_experiment(result_dir, '*tar')

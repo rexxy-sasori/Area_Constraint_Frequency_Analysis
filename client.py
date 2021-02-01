@@ -116,6 +116,7 @@ class ClientProtocol(threading.Thread):
         except (OSError, error) as e:
             print('[ERROR]: ', self.host, e.__class__().__str__(), e.__str__())
 
+
 class Client:
     def __init__(self, hosts=HOSTS, port=PORT):
         self.hosts = hosts
