@@ -38,17 +38,14 @@ class Server:
                         data = b""
                         while True:
                             temp = conn.recv(4096)
-                            print('[INFO] length {}'.format(len(temp)))
-                            if len(temp) > 0:
-                                data += temp
-                                print('[INFO] Received {} bytes, totaling {}'.format(len(temp), len(data)))
-                            else:
-                                print('exiting')
+                            if not temp:
                                 break
+                            data += temp
+                            print('[INFO] Received {} bytes, totaling {}'.format(len(temp), len(data)))
 
                         if data:
                             func_args = pickle.loads(data)
-                            print('[INFO] Receiver {} search arguments for simulation'.format(len(func_args)))
+                            print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
                             data = pickle.dumps(Msg('DONE'))
                             conn.sendall(data)
 
