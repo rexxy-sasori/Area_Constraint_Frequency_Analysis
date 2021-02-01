@@ -15,9 +15,9 @@ dirs = {
 }
 
 color = {
-    'DFT': 'b',
-    'DHT': 'lawngreen',
-    'J-DHT':'orange',
+    'DFT': u'#1f77b4',
+    'DHT': u'#ff7f0e',
+    'J-DHT':u'#2ca02c',
     'D-DHT': 'indigo'
 }
 
@@ -52,7 +52,7 @@ for name in results_dict.keys():
 
         freqs.append(float(f0))
         ks.append(k0)
-    plt.plot(ks,areas, marker='o', label=name, c=color[name])
+    plt.plot(ks,areas, marker='o', markersize=5, label=name, c=color[name])
 
 plt.xlabel('$k_o$', fontsize=15)
 plt.ylabel('AUR', fontsize=15)

@@ -35,7 +35,7 @@ def plot_roc_area(results, roc_name, auc_name):
     plt.close()
 
     plt.figure(figsize=(10, 5))
-    plt.plot(ks, areas, marker='o', markersize=12)
+    plt.plot(ks, areas, marker='o', markersize=5)
     # plt.scatter(ks[::5], areas[::5],marker='*', s=600,c='r')
     plt.xlabel('$k_o$', fontsize=15)
     plt.ylabel('Area under ROC Curve', fontsize=15)
