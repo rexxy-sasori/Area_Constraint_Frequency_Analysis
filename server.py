@@ -36,25 +36,23 @@ class Server:
                 with conn:
                     print('[INFO]: Connected by', addr, ' on ', socket.gethostname())
                     try:
-                        data = b""
                         while True:
-                            temp = s.recv(4096)
-                            if temp:
-                                data += temp
+                            data = b''
+                            while True:
+                                temp = s.recv(4096)
+                                if temp:
+                                    data += temp
+                                else:
+                                    break
+                            if data:
+                                if data:
+                                    func_args = pickle.loads(data)
+                                    print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
+                                    data = pickle.dumps(Msg('DONE'))
+                                    conn.sendall(data)
                             else:
                                 break
-                        if data:
-                            res = pickle.loads(data)
-                            print('[INFO] loads {}'.format(len(res)))
-                            logs += res
-                        else:
-                            break
                         print('OUT !!!')
-                        if data:
-                            func_args = pickle.loads(data)
-                            print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
-                            data = pickle.dumps(Msg('DONE'))
-                            conn.sendall(data)
 
                     except Exception as e:
                         print('[ERROR]:', e.__str__())
