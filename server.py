@@ -41,6 +41,7 @@ class Server:
                                 print('[INFO] Received {} bytes'.format(sys.getsizeof(temp)))
                                 data += temp
                             else:
+                                print('exiting')
                                 break
 
                         if data:
