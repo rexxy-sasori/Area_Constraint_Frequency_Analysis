@@ -22,7 +22,7 @@ def plot_roc_area(results, roc_name, auc_name):
         f0 = result.usr_configs.signal.freqs[0]
         k0 = result.usr_configs.signal.freqs[0] * result.usr_configs.signal.block_size / result.usr_configs.signal.fs
         ks.append(k0)
-        if idx % 5 == 0:
+        if idx % 25 == 0:
             plt.plot(result.roc.fpr, result.roc.tpr, label='k_0: {}; f_0: {}'.format(k0, '{0:.5g} Hz'.format(f0)))
 
     plt.grid()
