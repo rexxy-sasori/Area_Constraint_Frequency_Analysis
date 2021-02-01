@@ -19,6 +19,8 @@ HOSTS = [
 
     'csl-411-13.csl.illinois.edu',
     'csl-411-14.csl.illinois.edu',
+
+    'aristotle.csl.illinois.edu'
 ]
 PORT = 55558
 
