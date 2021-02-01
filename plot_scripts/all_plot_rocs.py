@@ -86,7 +86,7 @@ if __name__ == '__main__':
     #     print('plotting results in {}'.format(result_dir))
     #     plot_auc_roc_single_experiment(result_dir, '*tar')
 
-    pool = Pool(processes=16)
+    pool = Pool(processes=32)
     s = time.time()
     print('staring at', datetime.now())
     for _ in tqdm(pool.map(plot_auc_roc_single_experiment, result_dirs), total=len(result_dirs)):
