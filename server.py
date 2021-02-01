@@ -37,6 +37,7 @@ class Server:
                         data = b""
                         while True:
                             temp = conn.recv(4096)
+                            print(temp)
                             if temp:
                                 print('[INFO] Received {} bytes'.format(sys.getsizeof(temp)))
                                 data += temp
@@ -46,7 +47,7 @@ class Server:
 
                         if data:
                             func_args = pickle.loads(data)
-                            print('[INFO] Receiver {} search arguments for simulation'.format(len(func_args)))
+                            print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
                             data = pickle.dumps(Msg('DONE'))
                             conn.sendall(data)
 
