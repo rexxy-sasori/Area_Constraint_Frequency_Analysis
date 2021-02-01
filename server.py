@@ -35,7 +35,7 @@ class Server:
                 with conn:
                     print('[INFO]: Connected by', addr, ' on ', socket.gethostname())
                     try:
-                        data = conn.recv(4096)
+                        data = conn.recv(40960)
                         if data:
                             func_args = pickle.loads(data)
                             print('[INFO] Receiver {} search arguments for simulation'.format(len(func_args)))
