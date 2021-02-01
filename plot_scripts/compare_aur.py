@@ -10,13 +10,13 @@ phi = 'phi_0'
 dirs = {
     'DFT': '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'DHT': '/home/hgeng4/pmsp/results/Fmethod_fht/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
-    'J-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_Jitter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
+    'J-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'D-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5'
 }
 
 color = {
     'DFT': 'b',
-    'DHT': 'g',
+    'DHT': 'lawngreen',
     'J-DHT':'orange',
     'D-DHT': 'indigo'
 }
