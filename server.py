@@ -44,7 +44,7 @@ class Server:
                         #     print('[INFO] Received {} bytes, totalling {} bytes'.format(len(temp), len(data)))
                         data = []
                         while True:
-                            packet = s.recv(4096)
+                            packet = conn.recv(4096)
                             if not packet: break
                             data.append(packet)
 
