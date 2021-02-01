@@ -5,7 +5,6 @@ from struct import unpack
 
 
 class ServerProtocol:
-
     def __init__(self):
         self.socket = None
         self.output_dir = '.'
@@ -41,11 +40,6 @@ class ServerProtocol:
                 finally:
                     connection.shutdown(SHUT_WR)
                     connection.close()
-
-                with open(os.path.join(
-                        self.output_dir, '%06d.jpg' % self.file_num), 'w'
-                ) as fp:
-                    fp.write(data)
 
                 self.file_num += 1
         finally:
