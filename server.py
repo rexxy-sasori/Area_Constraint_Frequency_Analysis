@@ -45,7 +45,8 @@ class Server:
                             else:
                                 print('[INFO] All arguments received, start parsing request ...')
                                 break
-
+                            print('INLOOP')
+                        print('OUT !!!')
                         if data:
                             func_args = pickle.loads(data)
                             print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
