@@ -40,7 +40,7 @@ class Server:
                             if temp:
                                 print('[INFO] Received {} bytes'.format(len(temp)))
                                 data += temp
-                                print('[INFO] Total data {} bytes'.format(data))
+                                print('[INFO] Total data {} bytes'.format(len(data)))
                             else:
                                 print('[INFO] All arguments received, start parsing request ...')
                                 break
