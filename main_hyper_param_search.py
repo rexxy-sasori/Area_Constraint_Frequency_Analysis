@@ -2,6 +2,7 @@ import glob
 import os
 import shutil
 import time
+import warnings
 from datetime import datetime
 from multiprocessing import Pool
 
@@ -13,6 +14,8 @@ from IO.result import DetectionResult
 from core import detector
 from core import freq_transform
 from core import signal_generator
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 
 def run(usr_config):
@@ -66,7 +69,6 @@ def experiment(usr_configs_template, hyper_param):
     if os.path.exists(usr_configs_template.result_dir):
         number_tar = glob.glob(os.path.join(usr_configs_template.result_dir, '*tar'))
         if len(number_tar) != 101:
-            print(usr_configs_template.result_dir, '\n')
             shutil.rmtree(usr_configs_template.result_dir)
             pass
         else:
