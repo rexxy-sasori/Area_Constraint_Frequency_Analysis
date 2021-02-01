@@ -47,8 +47,6 @@ def plot_roc_area(results, roc_name, auc_name):
 
 
 def plot_auc_roc_single_experiment(result_dir):
-    if 'noise_level_0' in result_dir:
-        return
     if 'noise_level_0.1' in result_dir:
         return
 
