@@ -1,12 +1,11 @@
+import glob
 import os
 import time
 from datetime import datetime
 from multiprocessing import Pool
-import glob
-import shutil
+
 import numpy as np
 import tqdm
-import socket
 from tqdm import tqdm
 
 from IO import config
@@ -64,18 +63,18 @@ def experiment(usr_configs_template, hyper_param):
     test_k = np.linspace(3, 4, 101)
     test_f = test_k / N * fs
 
-    if os.path.exists(usr_configs_template.result_dir,):
+    if os.path.exists(usr_configs_template.result_dir, ):
         number_tar = glob.glob(os.path.join(usr_configs_template.result_dir, '*tar'))
         if len(number_tar) != 101:
-            print(usr_configs_template.result_dir,'\n')
-            #shutil.rmtree(usr_configs_template.result_dir)
+            print(usr_configs_template.result_dir, '\n')
+            # shutil.rmtree(usr_configs_template.result_dir)
             pass
         else:
             return
 
     for f in test_f:
         usr_configs_template.signal.freqs = [f]
-        #run(usr_configs_template)
+        # run(usr_configs_template)
 
 
 def multi_run_wrapper(args):
@@ -107,4 +106,3 @@ if __name__ == '__main__':
     total_args = [[usr_configs_template, s] for s in search_space]
 
     run_single_machine(usr_configs_template, search_space, host_name=None)
-

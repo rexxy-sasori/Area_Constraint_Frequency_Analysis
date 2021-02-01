@@ -1,7 +1,11 @@
-import os
 import pickle
+from datetime import datetime
 from socket import *
 from struct import unpack
+
+from tqdm import tqdm
+from multiprocessing import Pool
+from main_hyper_param_search import multi_run_wrapper
 
 
 class ServerProtocol:
@@ -9,11 +13,15 @@ class ServerProtocol:
         self.socket = None
         self.output_dir = '.'
         self.file_num = 1
+        self.host = -1
+        self.port = -1
 
     def listen(self, server_ip, server_port):
         self.socket = socket(AF_INET, SOCK_STREAM)
         self.socket.bind((server_ip, server_port))
         self.socket.listen(1)
+        self.host = server_ip
+        self.port = server_port
 
     def handle_data(self):
         try:
@@ -33,7 +41,17 @@ class ServerProtocol:
 
                     arguments = pickle.loads(data)
                     print('[INFO]: Received {} arguments for simulation'.format(len(arguments)))
-                    with open("receiver_test.txt", "wb") as fp:  # Pickling
+                    print('[INFO]: Starting simulations ...')
+
+                    pool = Pool(processes=4)
+                    starting = datetime.now()
+                    print('staring at', starting)
+                    for _ in tqdm(pool.map(multi_run_wrapper, arguments), total=len(arguments)):
+                        pass
+                    ending = datetime.now()
+                    print('end at', ending)
+
+                    with open("{}_receiver_test.txt".format(self.host), "wb") as fp:  # Pickling
                         pickle.dump(data, fp)
 
                     # send our 0 ack
