@@ -41,6 +41,10 @@ class ServerProtocol:
 
                     arguments = pickle.loads(data)
                     print('[INFO]: Received {} arguments for simulation'.format(len(arguments)))
+
+                    with open("{}_receiver_test.txt".format(self.host), "wb") as fp:  # Pickling
+                        pickle.dump(data, fp)
+
                     print('[INFO]: Starting simulations ...')
 
                     pool = Pool(processes=4)
@@ -50,9 +54,6 @@ class ServerProtocol:
                         pass
                     ending = datetime.now()
                     print('end at', ending)
-
-                    with open("{}_receiver_test.txt".format(self.host), "wb") as fp:  # Pickling
-                        pickle.dump(data, fp)
 
                     # send our 0 ack
                     assert len(b'\00') == 1
