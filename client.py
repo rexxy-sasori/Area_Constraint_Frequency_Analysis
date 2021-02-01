@@ -44,8 +44,6 @@ class QueryThread(threading.Thread):
         """
         logs = []  # the result of query
 
-        d = pickle.dumps(self.func_args)
-
         # do the query for each host
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             try:
@@ -53,7 +51,7 @@ class QueryThread(threading.Thread):
                 s.connect((self.host, self.port))
 
                 # send query pattern as json format
-                data = json.dumps(d).encode('utf-8')
+                data = pickle.dumps(self.func_args)
                 s.sendall(data)
 
                 # receive return results
