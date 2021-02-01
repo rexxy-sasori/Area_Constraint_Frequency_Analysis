@@ -3,12 +3,11 @@ import pickle
 import socket
 
 from core.utils import Msg
-
+import sys
 # hard code hosts' (VMs') ip and port here
 # todo: use config file instead
 HOST = socket.gethostname()
 PORT = 55558
-
 
 class Server:
     def __init__(self, host=HOST, port=PORT):
@@ -39,6 +38,7 @@ class Server:
                         while True:
                             temp = conn.recv(4096)
                             if temp:
+                                print('[INFO] Received {} bytes'.format(sys.getsizeof(temp)))
                                 data += temp
                             else:
                                 break
