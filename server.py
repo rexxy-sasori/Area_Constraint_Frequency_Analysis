@@ -41,7 +41,7 @@ class Server:
                             if not temp:
                                 break
                             data += temp
-                            print('[INFO] Received {} bytes, totaling {}'.format(len(temp), len(data)))
+                            print('[INFO] Received {} bytes, totalling {} bytes'.format(len(temp), len(data)))
 
                         if data:
                             func_args = pickle.loads(data)
