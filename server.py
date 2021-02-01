@@ -42,9 +42,14 @@ class Server:
                         #         break
                         #     data += temp
                         #     print('[INFO] Received {} bytes, totalling {} bytes'.format(len(temp), len(data)))
-                        data = conn.recv(4096)
+                        data = []
+                        while True:
+                            packet = s.recv(4096)
+                            if not packet: break
+                            data.append(packet)
+
                         if data:
-                            func_args = pickle.loads(data)
+                            func_args = pickle.loads(b"".join(data))
                             print('[INFO] Received {} search arguments for simulation'.format(len(func_args)))
                             data = pickle.dumps(Msg('DONE'))
                             conn.sendall(data)
