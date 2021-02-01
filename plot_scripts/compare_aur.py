@@ -14,6 +14,13 @@ dirs = {
     'D-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5'
 }
 
+color = {
+    'DFT': 'b',
+    'DHT': 'g',
+    'J-DHT':'orange',
+    'D-DHT': 'indigo'
+}
+
 results_dict = {
     k: [] for k in dirs.keys()
 }
@@ -23,6 +30,7 @@ if not os.path.exists(plot_dir):
     os.makedirs(plot_dir)
 
 plt.figure(figsize=(10, 5))
+
 for name in results_dict.keys():
     results_paths = glob.glob(os.path.join(dirs[name], '*tar'))
     results = []
@@ -44,12 +52,13 @@ for name in results_dict.keys():
 
         freqs.append(float(f0))
         ks.append(k0)
+    plt.plot(ks,areas, marker='o', label=name, c=color[name])
 
-    plt.xlabel('$k_o$', fontsize=15)
-    plt.ylabel('AUR', fontsize=15)
-    plt.grid()
-    plt.legend(fontsize=15)
-    plt.tick_params('both', labelsize=15)
-    plt.savefig(os.path.join(plot_dir, 'aur.png'))
-    plt.clf()
-    plt.close()
+plt.xlabel('$k_o$', fontsize=15)
+plt.ylabel('AUR', fontsize=15)
+plt.grid()
+plt.legend(fontsize=15)
+plt.tick_params('both', labelsize=15)
+plt.savefig(os.path.join(plot_dir, 'aur.png'))
+plt.clf()
+plt.close()
