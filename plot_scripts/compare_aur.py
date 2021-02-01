@@ -37,7 +37,7 @@ for name in results_dict.keys():
     for p in results_paths:
         result = torch.load(p).get('result')
         results.append(result)
-    print('collected {} results @ {}'.format(len(results),dir[name]))
+    print('collected {} results @ {}'.format(len(results),dirs[name]))
     results_dict[name] = sorted(results, key=lambda x: x.usr_configs.signal.freqs[0])
 
     areas = []
