@@ -91,7 +91,7 @@ class ClientProtocol(threading.Thread):
         self.socket.close()
         self.socket = None
 
-    def send_dat(self):
+    def send_data(self):
         data = pickle.dumps(self.func_args)
         # use struct to make sure we have a consistent endianness on the length
         length = pack('>Q', len(data))
@@ -104,12 +104,11 @@ class ClientProtocol(threading.Thread):
         try:
             t_start = time.time()
             self.connect()
-            self.send_dat()
+            self.send_data()
             t_end = time.time()
             self.time_cost = t_end - t_start
         except (OSError, error) as e:
             print('[ERROR]: ', self.host, e.__class__().__str__(), e.__str__())
-
 
 class Client:
     def __init__(self, hosts=HOSTS, port=PORT):
