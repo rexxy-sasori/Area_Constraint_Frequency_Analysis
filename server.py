@@ -37,10 +37,10 @@ class Server:
                         data = b""
                         while True:
                             temp = conn.recv(4096)
-                            print(temp)
                             if temp:
-                                print('[INFO] Received {} bytes'.format(sys.getsizeof(temp)))
+                                print('[INFO] Received {} bytes'.format(len(temp)))
                                 data += temp
+                                print('[INFO] Total data {} bytes'.format(data))
                             else:
                                 print('[INFO] All arguments received, start parsing request ...')
                                 break
