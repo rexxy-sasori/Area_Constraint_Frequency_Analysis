@@ -52,6 +52,7 @@ class QueryThread(threading.Thread):
 
                 # send query pattern as json format
                 data = pickle.dumps(self.func_args)
+                print('[INFO] sending {} bytes to {}'.format(len(data), self.host))
                 s.sendall(data)
 
                 # receive return results
