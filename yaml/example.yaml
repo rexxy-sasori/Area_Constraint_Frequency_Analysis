@@ -1,0 +1,37 @@
+seed: 931910
+result_dir: ~
+signal:
+  fs: 2000
+  num_pos_decision: 10000
+  block_size: 16
+  num_blocks_avg: 2
+  hop_size: 32
+  freqs: [ 375 ]
+  phases: [ 0 ]
+  amps: [ 1 ]
+noise:
+  name: 'rvs'
+  init_args:
+    slope: 1
+    steady_state: 0.5
+    top: 0.5
+freq_transform_method:
+  name: 'fft'
+detection:
+  name: 'ml'
+  init_args: ~
+quantization:
+  inputs:
+    quantize: False
+    num_bits: 8
+    clip_val: 1
+  weights:
+    quantize: False
+    num_bits: 8
+    clip_val: 1
+  accumulator:
+    quantize: False
+    num_bits: 8
+    clip_val: 1
+
+
