@@ -63,7 +63,7 @@ def experiment(usr_configs_template, hyper_param):
     test_k = np.linspace(3, 4, 101)
     test_f = test_k / N * fs
 
-    if os.path.exists(usr_configs_template.result_dir, ):
+    if os.path.exists(usr_configs_template.result_dir):
         number_tar = glob.glob(os.path.join(usr_configs_template.result_dir, '*tar'))
         if len(number_tar) != 101:
             print(usr_configs_template.result_dir, '\n')
@@ -71,7 +71,7 @@ def experiment(usr_configs_template, hyper_param):
             pass
         else:
             return
-
+    print(usr_configs_template.result_dir)
     for f in test_f:
         usr_configs_template.signal.freqs = [f]
         # run(usr_configs_template)
