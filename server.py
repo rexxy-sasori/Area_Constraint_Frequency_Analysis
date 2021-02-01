@@ -25,6 +25,8 @@ class Server:
         Run a server, to receive the query pattern from clients and return log data.
         :return: None
         """
+        logs = []  # the
+
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.bind((self.host, self.port))
             s.listen(1)
@@ -36,16 +38,17 @@ class Server:
                     try:
                         data = b""
                         while True:
-                            temp = conn.recv(4096)
-                            print(type(temp))
+                            temp = s.recv(4096)
                             if temp:
-                                print('[INFO] Received {} bytes'.format(len(temp)))
                                 data += temp
-                                print('[INFO] Total data {} bytes'.format(len(data)))
                             else:
-                                print('[INFO] All arguments received, start parsing request ...')
                                 break
-                            print('INLOOP')
+                        if data:
+                            res = pickle.loads(data)
+                            print('[INFO] loads {}'.format(len(res)))
+                            logs += res
+                        else:
+                            break
                         print('OUT !!!')
                         if data:
                             func_args = pickle.loads(data)
