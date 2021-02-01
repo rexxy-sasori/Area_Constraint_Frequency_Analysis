@@ -41,7 +41,7 @@ class Server:
                                 print('[INFO] Received {} bytes'.format(sys.getsizeof(temp)))
                                 data += temp
                             else:
-                                print('exiting')
+                                print('[INFO] All arguments received, start parsing request ...')
                                 break
 
                         if data:
