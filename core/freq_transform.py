@@ -135,8 +135,7 @@ def fast_dht_jitter(seq, axis=-1):
         fht_seq_jiter = np.zeros(seq.shape)
         for i in range(L):
             coeffs = dht_coeff_jitter(N)
-            fht_seq_jiter[i, :] = dht_direct_dp(seq[i, :], coeffs, length=N)
-
+            fht_seq_jiter[i, :] = coeffs.dot(seq[i, :])
         return fht_seq_jiter
 
 
@@ -150,8 +149,7 @@ def fast_dht_ditter(seq, axis=-1):
         fht_seq_jiter = np.zeros(seq.shape)
         coeffs = dht_coeff_ditter(N)
         for i in range(L):
-            fht_seq_jiter[i, :] = dht_direct_dp(seq[i, :], coeffs, length=N)
-
+            fht_seq_jiter[i, :] = coeffs.dot(seq[i, :])
         return fht_seq_jiter
 
 
