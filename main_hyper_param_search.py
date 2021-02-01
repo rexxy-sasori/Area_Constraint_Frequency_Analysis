@@ -1,11 +1,11 @@
 import glob
 import os
+import shutil
 import time
 from datetime import datetime
 from multiprocessing import Pool
 
 import numpy as np
-import tqdm
 from tqdm import tqdm
 
 from IO import config
@@ -67,14 +67,14 @@ def experiment(usr_configs_template, hyper_param):
         number_tar = glob.glob(os.path.join(usr_configs_template.result_dir, '*tar'))
         if len(number_tar) != 101:
             print(usr_configs_template.result_dir, '\n')
-            # shutil.rmtree(usr_configs_template.result_dir)
+            shutil.rmtree(usr_configs_template.result_dir)
             pass
         else:
             return
-    print(usr_configs_template.result_dir)
+
     for f in test_f:
         usr_configs_template.signal.freqs = [f]
-        # run(usr_configs_template)
+        run(usr_configs_template)
 
 
 def multi_run_wrapper(args):
