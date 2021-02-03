@@ -6,7 +6,7 @@ import torch
 from sklearn import metrics
 
 L = 'L_1'
-phi = 'phi_0'
+phi = 'phi_0.7853981633974483'
 dirs = {
     'DFT': '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'DHT': '/home/hgeng4/pmsp/results/Fmethod_fht/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
