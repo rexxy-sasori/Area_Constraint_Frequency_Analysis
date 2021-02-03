@@ -20,7 +20,7 @@ color = {
     'DHT': u'#2ca02c',
     'J-DHT': u'#ff7f0e',
     'D-DHT': 'indigo',
-    'SJ-DHT': '17becf'
+    'SJ-DHT': u'#17becf',
 }
 
 results_dict = {
