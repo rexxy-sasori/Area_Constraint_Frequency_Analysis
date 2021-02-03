@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
 
-L = 'L_5'
+L = 'L_2'
 phi = 'phi_0'
 dirs = {
     'DFT': '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
