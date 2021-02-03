@@ -36,6 +36,13 @@ class HarmonicEstimator:
             scores = np.zeros(observations.shape[0])
             for idx in range(observations.shape[1]):
                 scores += self.compute_umpi_stats(observations, idx, snr)
+        elif self.rule == 'single':
+            observations = observations.mean(1)
+            dim = observations.shape[-1]
+            observations_half = observations[:, 0:int(dim / 2)]
+            scores = observations_half[:, 6]
+            indices = np.argmax(observations_half, axis=1)
+            mlestimates = MLEstimates(scores, indices)
         else:
             raise NotImplementedError
 

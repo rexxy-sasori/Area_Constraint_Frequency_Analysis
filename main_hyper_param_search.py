@@ -69,11 +69,14 @@ def experiment(usr_configs_template, hyper_param):
     if os.path.exists(usr_configs_template.result_dir):
         number_tar = glob.glob(os.path.join(usr_configs_template.result_dir, '*tar'))
         if len(number_tar) != 101:
+            print('[INFO]: Found incomplete directories from previous runs, deleting :',
+                  usr_configs_template.result_dir)
             shutil.rmtree(usr_configs_template.result_dir)
             pass
         else:
             return
 
+    print('[INFO]: Simulating: ', usr_configs_template.result_dir)
     for f in test_f:
         usr_configs_template.signal.freqs = [f]
         run(usr_configs_template)

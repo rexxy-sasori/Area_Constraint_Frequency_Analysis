@@ -1,6 +1,6 @@
 import numpy as np
 
-from IO.config import get_usr_config, parse_search_space
+from IO.config import get_usr_config
 from IO.result import DetectionResult
 from core import detector
 from core import freq_transform

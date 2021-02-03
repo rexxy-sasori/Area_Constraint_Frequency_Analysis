@@ -1,10 +1,11 @@
 import pickle
 from datetime import datetime
+from multiprocessing import Pool
 from socket import *
 from struct import unpack
 
 from tqdm import tqdm
-from multiprocessing import Pool
+
 from main_hyper_param_search import multi_run_wrapper
 
 
@@ -47,7 +48,7 @@ class ServerProtocol:
 
                     print('[INFO]: Starting simulations ...')
 
-                    pool = Pool(processes=4)
+                    pool = Pool(processes=8)
                     starting = datetime.now()
                     print('staring at', starting)
                     for _ in tqdm(pool.map(multi_run_wrapper, arguments), total=len(arguments)):

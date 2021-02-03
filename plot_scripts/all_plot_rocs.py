@@ -1,12 +1,12 @@
 import glob
 import os
+import time
 from datetime import datetime
+from multiprocessing import Pool
 
 import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
-import time
-from multiprocessing import Pool
 from tqdm import tqdm
 
 

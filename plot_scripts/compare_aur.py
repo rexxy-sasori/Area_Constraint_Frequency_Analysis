@@ -17,7 +17,7 @@ dirs = {
 color = {
     'DFT': u'#1f77b4',
     'DHT': u'#2ca02c',
-    'J-DHT':u'#ff7f0e',
+    'J-DHT': u'#ff7f0e',
     'D-DHT': 'indigo'
 }
 
@@ -37,7 +37,7 @@ for name in results_dict.keys():
     for p in results_paths:
         result = torch.load(p).get('result')
         results.append(result)
-    print('collected {} results @ {}'.format(len(results),dirs[name]))
+    print('collected {} results @ {}'.format(len(results), dirs[name]))
     results_dict[name] = sorted(results, key=lambda x: x.usr_configs.signal.freqs[0])
 
     areas = []
@@ -52,7 +52,7 @@ for name in results_dict.keys():
 
         freqs.append(float(f0))
         ks.append(k0)
-    plt.plot(ks,areas, marker='o', markersize=5, label=name, c=color[name])
+    plt.plot(ks, areas, marker='o', markersize=5, label=name, c=color[name])
 
 plt.xlabel('$k_o$', fontsize=15)
 plt.ylabel('AUR', fontsize=15)

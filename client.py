@@ -8,17 +8,17 @@ from struct import pack
 from IO import config
 
 HOSTS = [
-    'csl-411-05.csl.illinois.edu',
-    'csl-411-06.csl.illinois.edu',
-
-    'csl-411-07.csl.illinois.edu',
-    'csl-411-08.csl.illinois.edu',
-
-    'csl-411-09.csl.illinois.edu',
-    'csl-411-10.csl.illinois.edu',
-
-    'csl-411-13.csl.illinois.edu',
-    'csl-411-14.csl.illinois.edu',
+    # 'csl-411-05.csl.illinois.edu',
+    # 'csl-411-06.csl.illinois.edu',
+    #
+    # 'csl-411-07.csl.illinois.edu',
+    # 'csl-411-08.csl.illinois.edu',
+    #
+    # 'csl-411-09.csl.illinois.edu',
+    # 'csl-411-10.csl.illinois.edu',
+    #
+    # 'csl-411-13.csl.illinois.edu',
+    # 'csl-411-14.csl.illinois.edu',
 
     'aristotle.csl.illinois.edu'
 ]
@@ -76,7 +76,7 @@ class QueryThread(threading.Thread):
 
 
 class ClientProtocol(threading.Thread):
-    def __init__(self, host,port):
+    def __init__(self, host, port):
         super(ClientProtocol, self).__init__()
         self.socket = None
         self.host = host
@@ -96,7 +96,7 @@ class ClientProtocol(threading.Thread):
     def send_data(self):
         data = pickle.dumps(self.func_args)
 
-        with open(self.host+"_send_test.txt", "wb") as fp:  # Pickling
+        with open(self.host + "_send_test.txt", "wb") as fp:  # Pickling
             pickle.dump(data, fp)
 
         # use struct to make sure we have a consistent endianness on the length

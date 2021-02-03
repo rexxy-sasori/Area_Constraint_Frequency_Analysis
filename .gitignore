@@ -1,3 +1,4 @@
 *.txt
 *.png
-*.pnc
+*.pyc
+plots
