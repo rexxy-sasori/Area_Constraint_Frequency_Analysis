@@ -5,12 +5,13 @@ import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
 
-L = 'L_10'
-phi = 'phi_0.7853981633974483'
+L = 'L_1'
+phi = 'phi_0'
 dirs = {
     'DFT': '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'DHT': '/home/hgeng4/pmsp/results/Fmethod_fht/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'J-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
+    'SJ-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_single/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'D-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5'
 }
 
@@ -18,7 +19,8 @@ color = {
     'DFT': u'#1f77b4',
     'DHT': u'#2ca02c',
     'J-DHT': u'#ff7f0e',
-    'D-DHT': 'indigo'
+    'D-DHT': 'indigo',
+    'SJ-DHT': '17becf'
 }
 
 results_dict = {
