@@ -1,4 +1,5 @@
 import pickle
+import random
 import socket
 import threading
 import time
@@ -164,5 +165,6 @@ if __name__ == '__main__':
     usr_configs_template = config.parse_config('./yaml/template.yaml')
     search_space = config.parse_search_space('./yaml/search_space.yaml')
     total_args = [[usr_configs_template, s] for s in search_space]
+    random.shuffle(total_args)
 
     c.query(total_args)

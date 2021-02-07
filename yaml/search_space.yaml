@@ -1,7 +1,7 @@
-freq_transform_method: [ 'fht_jitter' ]
+freq_transform_method: [ 'fht_ditter' ]
 block_size: [ 16 ]
-num_blocks_avg: [20]
+num_blocks_avg: [1,20]
 noise_level: [ 0.5 ]
-phi: [ 0, 0.7853981633974483 ]
-detection_method: [ 'single' ]
+phi: [ -0.7853981633974483 ]
+detection_method: [ 'ml' ]
 

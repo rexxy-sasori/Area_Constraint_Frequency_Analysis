@@ -40,7 +40,7 @@ class HarmonicEstimator:
             observations = observations.mean(1)
             dim = observations.shape[-1]
             observations_half = observations[:, 0:int(dim / 2)]
-            scores = observations_half[:, 6]
+            scores = observations_half[:, 6] #Todo extract to parameter level
             indices = np.argmax(observations_half, axis=1)
             mlestimates = MLEstimates(scores, indices)
         else:

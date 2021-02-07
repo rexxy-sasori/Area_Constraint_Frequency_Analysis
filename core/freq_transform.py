@@ -166,6 +166,20 @@ def fast_dht(seq, axis=-1):
     return dht
 
 
+def fast_dht_gaussian(seq, axis=-1):
+    if axis == -1:
+        L, N = seq.shape
+        coeffs = dht_coeff_gaussian(N)
+        return dht_direct_dp(seq[0], coeffs, length=N)
+    else:
+        L, N = seq.shape
+        fht_seq_jiter = np.zeros(seq.shape)
+        for i in range(L):
+            coeffs = dht_coeff_gaussian(N)
+            fht_seq_jiter[i, :] = coeffs.dot(seq[i, :])
+        return fht_seq_jiter
+
+
 def transform_all(seqs, freq_transform_configs, signal_configs):
     transform_kernel = __FREQ_TRANSFORMS__.get(freq_transform_configs.name)
 
@@ -203,6 +217,7 @@ __FREQ_TRANSFORMS__ = {
     'fht': fast_dht,
     'fht_jitter': fast_dht_jitter,
     'fht_ditter': fast_dht_ditter,
+    'fht_gaussian': fast_dht_gaussian
 }
 
 
@@ -231,6 +246,17 @@ def dht_coeff_ditter(block_size):
     return coeffs
 
 
+def dht_coeff_gaussian(block_size):
+    # idx = np.arange(block_size)
+    # idx_matrix = np.outer(idx, idx)
+    # ditter_phase = (1 - np.sin(np.pi * np.arange(block_size) + np.pi / 2)) * np.pi / 4
+    # ditter_phase = np.array(block_size * [ditter_phase])
+    # coeffs = np.sqrt(2) * np.cos(2 * np.pi * idx_matrix / block_size - np.pi / 4 + ditter_phase)
+
+    coeffs = np.random.normal(0,np.sqrt(10),size=(block_size,block_size))
+    return coeffs
+
+
 __COEFFS__ = {
     one_stage_goertzel: None,
     two_stage_goertzel: None,
@@ -239,5 +265,6 @@ __COEFFS__ = {
     dht_dft: dht_coeff,
     np.fft.fft: None,
     fast_dht: None,
-    dht_direct_dp_jitter: dht_coeff_jitter
+    dht_direct_dp_jitter: dht_coeff_jitter,
+
 }
