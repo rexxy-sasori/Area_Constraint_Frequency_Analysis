@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
 
-L = 'L_10'
+L = 'L_1'
 phi = 'phi_0.7853981633974483'
 
 dirs = {
@@ -23,7 +23,7 @@ color = {
     'J-DHT': u'#ff7f0e',
     'D-DHT': 'indigo',
     'SJ-DHT': u'#17becf',
-    'FJ-DHT': 'navy',
+    'FJ-DHT': u'#e377c2',
 }
 
 results_dict = {
