@@ -1,5 +1,6 @@
 import numpy as np
 from numba import njit
+from core.utils import filter_data
 
 
 @njit
@@ -139,6 +140,20 @@ def fast_dht_jitter(seq, axis=-1):
         return fht_seq_jiter
 
 
+def fast_dht_jitter_filter(seq, axis=-1):
+    if axis == -1:
+        L, N = seq.shape
+        coeffs = dht_coeff_filter_jitter(N)
+        return dht_direct_dp(seq[0], coeffs, length=N)
+    else:
+        L, N = seq.shape
+        fht_seq_jiter = np.zeros(seq.shape)
+        for i in range(L):
+            coeffs = dht_coeff_filter_jitter(N)
+            fht_seq_jiter[i, :] = coeffs.dot(seq[i, :])
+        return fht_seq_jiter
+
+
 def fast_dht_ditter(seq, axis=-1):
     if axis == -1:
         L, N = seq.shape
@@ -217,7 +232,8 @@ __FREQ_TRANSFORMS__ = {
     'fht': fast_dht,
     'fht_jitter': fast_dht_jitter,
     'fht_ditter': fast_dht_ditter,
-    'fht_gaussian': fast_dht_gaussian
+    'fht_gaussian': fast_dht_gaussian,
+    'fht_jitter_filter': fast_dht_jitter_filter
 }
 
 
@@ -233,6 +249,19 @@ def dht_coeff_jitter(block_size):
     idx_matrix = np.outer(idx, idx)
     random_phases = np.random.uniform(0, 2 * np.pi, size=(block_size, block_size))
     coeffs = np.sqrt(2) * np.cos(2 * np.pi * idx_matrix / block_size - np.pi / 4 + random_phases)
+
+    return coeffs
+
+
+def dht_coeff_filter_jitter(block_size):
+    idx = np.arange(block_size)
+    idx_matrix = np.outer(idx, idx)
+    random_phases = np.random.uniform(0, 2 * np.pi, size=(block_size, block_size))
+
+    filtered_random_phases = filter_data(random_phases.reshape(block_size*block_size), 1000/16, 2000)
+    filtered_random_phases = filtered_random_phases.reshape(block_size,block_size)
+
+    coeffs = np.sqrt(2) * np.cos(2 * np.pi * idx_matrix / block_size - np.pi / 4 + filtered_random_phases)
 
     return coeffs
 

@@ -1,5 +1,5 @@
 import numpy as np
-
+from scipy.signal import butter,lfilter
 
 def reformat(arr, block_size, hop_size, num_sample):
     def index_func(i):
@@ -87,3 +87,16 @@ def mode(ndarray, axis=0):
 class Msg:
     def __init__(self, content):
         self.content = content
+
+
+def butter_low(cutoff, fs, order=5):
+    nyq = 0.5 * fs
+    ncutoff = cutoff / nyq
+    b, a = butter(order, ncutoff, btype='low')
+    return b, a
+
+
+def filter_data(x, cutoff, fs):
+    b, a = butter_low(cutoff, fs)
+    y = lfilter(b, a, x)
+    return y

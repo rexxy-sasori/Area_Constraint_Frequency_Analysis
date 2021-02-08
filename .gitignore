@@ -3,5 +3,5 @@
 *.pyc
 plots/*png
 IO/__pycache__/
-core/__pycache__/
+core/__pycache__/*pyc
 __pycache__/
