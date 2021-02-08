@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
 
-L = 'L_10'
+L = 'L_1'
 phi = 'phi_0.7853981633974483'
 
 dirs = {
@@ -13,7 +13,8 @@ dirs = {
     'DHT': '/home/hgeng4/pmsp/results/Fmethod_fht/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'J-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'SJ-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_single/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
-    'D-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5'
+    'D-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
+    'FJ-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter_filter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
 }
 
 color = {
@@ -22,6 +23,7 @@ color = {
     'J-DHT': u'#ff7f0e',
     'D-DHT': 'indigo',
     'SJ-DHT': u'#17becf',
+    'FJ-DHT': 'navy',
 }
 
 results_dict = {
