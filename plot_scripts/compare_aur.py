@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import torch
 from sklearn import metrics
 
-L = 'L_5'
+L = 'L_10'
 phi = 'phi_0.7853981633974483'
 
 dirs = {
