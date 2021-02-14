@@ -7,7 +7,7 @@ import itertools
 import os
 from collections import OrderedDict
 
-import ruamel.yaml
+import ruamel.yaml as yaml
 
 
 class EmptyConfig:
@@ -59,7 +59,7 @@ def parse_config(path):
     ext = ext.rstrip(' ')
     assert ext == 'yaml'
     with open(yaml_path) as file:
-        yml = ruamel.yaml.YAML()
+        yml = yaml.YAML()
         yml.allow_duplicate_keys = True
         doc = yml.load(file)
     usr_config = UsrConfigs(doc)
