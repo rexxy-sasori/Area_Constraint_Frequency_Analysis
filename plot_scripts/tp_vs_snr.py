@@ -39,6 +39,7 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
             tpr = find_tp_rate(r, search_fpr)
             noise_level_tprs[noise_level].append(tpr)
 
+    noise_levels = sorted(noise_levels)
     for noise_level in noise_levels:
         tprs.append(np.array(noise_level_tprs[noise_level]))
 
