@@ -25,7 +25,7 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
         noise_level_str = os.path.split(noise_level_dir)[1]
         noise_level_str = noise_level_str.lstrip('inde_noise_level_')
 
-        if noise_level_str == '0':
+        if noise_level_str == '0' or noise_level_str == '10':
             continue
         print(noise_level_dir)
         noise_level = float(noise_level_str)
@@ -52,7 +52,7 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05):
 
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
-            plt.plot(10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = 'fpr constraint: {}'.format(fpr_subj))
+            plt.plot(-10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = 'fpr constraint: {}'.format(fpr_subj))
 
     plt.grid()
     plt.xlabel('noise_level(dB)', fontsize=15)
