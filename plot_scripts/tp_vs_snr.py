@@ -54,7 +54,7 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05, N=1
     k0s = np.linspace(3,4,num_freqs)
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
-            plt.plot(-10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = '$k_o$ '+k0s[idx])
+            plt.plot(-10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = '$k_o$ '+str(k0s[idx]))
 
     plt.grid()
     plt.xlabel('noise_level(dB)', fontsize=15)
