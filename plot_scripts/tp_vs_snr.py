@@ -46,10 +46,10 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
 
 
 def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05):
-    freqs = tprs.shape[1]
+    num_freqs = tprs.shape[1]
     plt.figure(figsize=(10,5))
 
-    for idx, f in enumerate(freqs):
+    for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
             plt.plot(10*np.log10(noise_levels), tprs[:, idx],label = 'fpr constraint: {}'.format(fpr_subj))
 
