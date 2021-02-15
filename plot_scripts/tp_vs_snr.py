@@ -46,18 +46,20 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
     return np.array(noise_levels), np.array(tprs)
 
 
-def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05):
+def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05, N=16,fs=2000):
     num_freqs = tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10,5))
 
+    k0s = np.linspace(3,4,num_freqs)
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
-            plt.plot(-10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = 'fpr constraint: {}'.format(fpr_subj))
+            plt.plot(-10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = '$k_o$ '+k0s[idx])
 
     plt.grid()
     plt.xlabel('noise_level(dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
+    plt.title('fpr constraint: {}'.format(fpr_subj))
     plt.tick_params('both', labelsize=15)
     plt.legend(loc='lower right', fontsize=15)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
@@ -68,8 +70,10 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05):
 if __name__ == '__main__':
     dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0/N_16/L_1'
     fpr_subj = 0.1
+    fs=2000
+    N=16
     noise_levels, tprs = tp_vs_snr(dirname, search_fpr=fpr_subj)
-    plot_tpr_vs_noise_level(noise_levels,tprs, fpr_subj=fpr_subj)
+    plot_tpr_vs_noise_level(noise_levels,tprs, fpr_subj=fpr_subj, N=N,fs=fs)
 
 
 
