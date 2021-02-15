@@ -57,7 +57,7 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05, N=1
             plt.plot(-10*np.log10(noise_levels), tprs[:, idx],marker='o',markersize=5, label = '$k_o$ '+str(k0s[idx]))
 
     plt.grid()
-    plt.xlabel('SNR(dB)', fontsize=15)
+    plt.xlabel('Input SNR(dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
     plt.title('fpr constraint: {}'.format(fpr_subj))
     plt.tick_params('both', labelsize=15)
