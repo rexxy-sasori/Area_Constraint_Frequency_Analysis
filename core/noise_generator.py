@@ -44,7 +44,8 @@ class RVSNoiseGenerator(NoiseGenerator):
         self.f = f
 
     def check_args(self, noise_configs):
-        assert noise_configs.init_args.steady_state <= 10 and noise_configs.init_args.slope > 0
+        # assert noise_configs.init_args.steady_state <= 10 and noise_configs.init_args.slope > 0
+        return
 
     def get(self, signal_shape):
         uncorrelated_noise = np.random.normal(0, 1, signal_shape)
