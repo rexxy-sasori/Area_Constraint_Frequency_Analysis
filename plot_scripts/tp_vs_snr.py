@@ -70,23 +70,41 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, freqs, compute_output_power, how
     num_freqs = tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
-
     k0s = np.linspace(3, 4, num_freqs)
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
-            print(10 * np.log10(compute_output_power[idx]))
+            #print(10 * np.log10(compute_output_power[idx]))
             plt.plot(10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N), tprs[:, idx],
                      marker='o', markersize=5,
                      label='$k_o$ ' + str(k0s[idx]))
 
     plt.grid()
-    plt.xlabel('Input SNR(dB)', fontsize=15)
+    plt.xlabel('Detector Input SNR(dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
     plt.title('fpr constraint: {}'.format(fpr_subj))
     plt.tick_params('both', labelsize=15)
     plt.legend(loc='lower right', fontsize=15)
     plt.ylim([-0.1, 1.1])
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
+    plt.clf()
+    plt.close()
+
+    plt.figure(figsize=(10, 5))
+    k0s = np.linspace(3, 4, num_freqs)
+    for idx, f in enumerate(range(num_freqs)):
+        if idx % how_often == 0:
+            input_snr = - 10 * np.log10(noise_levels / N)
+            output_snr = 10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N)
+            plt.plot(input_snr, output_snr,
+                     marker='o', markersize=5,
+                     label='$k_o$ ' + str(k0s[idx]))
+    plt.grid()
+    plt.xlabel('Input SNR(dB)', fontsize=15)
+    plt.ylabel('Detector Input SNR(dB)', fontsize=15)
+    plt.title('Detector Input SNR (dB) vs. Input SNR (dB)')
+    plt.tick_params('both', labelsize=15)
+    plt.legend(loc='lower right', fontsize=15)
+    plt.savefig('/home/hgeng4/pmsp/plots/dnr_snr.png')
     plt.clf()
     plt.close()
 
