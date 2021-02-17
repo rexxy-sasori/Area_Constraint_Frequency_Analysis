@@ -93,7 +93,7 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, freqs, compute_output_power, how
     k0s = np.linspace(3, 4, num_freqs)
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
-            input_snr = - 10 * np.log10(noise_levels / N)
+            input_snr = - 10 * np.log10(noise_levels)
             output_snr = 10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N)
             plt.plot(input_snr, output_snr,
                      marker='o', markersize=5,
