@@ -105,19 +105,17 @@ def filter_data(x, cutoff, fs):
     return y
 
 
-def round_idx(float):
-    floor = np.floor(float)
-    ceil = np.ceil(float)
-
-    if float - floor >= ceil - float:
-        return int(ceil)
-    else:
-        return int(floor)
-
-
 def dft_output_signal_power(freq_o, phi, fs=2000, N=16):
     omega_o = 2 * pi * freq_o / fs
-    bin_idx = freq_o * N / fs
+
+    def round_idx(float):
+        floor = np.floor(float)
+        ceil = np.ceil(float)
+
+        if float - floor >= ceil - float:
+            return int(ceil)
+        else:
+            return int(floor)
 
     def get_left_pulse(omega_o, bin_idx, N):
         if omega_o == 2 * pi * bin_idx / N:
@@ -148,6 +146,7 @@ def dft_output_signal_power(freq_o, phi, fs=2000, N=16):
         factor = factor_num - factor_denom
         return factor * np.cos((N - 1) * omega_o + 2 * phi)
 
+    bin_idx = round_idx(freq_o * N / fs)
     left = get_left_pulse(omega_o, bin_idx, N)
     right = get_right_pulse(omega_o, bin_idx, N)
     cross = get_cross(omega_o, bin_idx, N, phi)
