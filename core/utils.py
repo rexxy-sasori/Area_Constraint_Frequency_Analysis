@@ -105,7 +105,7 @@ def filter_data(x, cutoff, fs):
     return y
 
 
-def dft_output_signal_power(freq_o, phi, fs=2000, N=16):
+def dft_output_signal_power(freq_o, phi, fs=2000, N=16,L=1):
     omega_o = 2 * pi * freq_o / fs
 
     def round_idx(float):
@@ -137,18 +137,19 @@ def dft_output_signal_power(freq_o, phi, fs=2000, N=16):
 
         return sqmag
 
-    def get_cross(omega_o, bin_idx, N, phi):
+    def get_cross(omega_o, bin_idx, N, phi, l):
         if omega_o == 2 * pi * bin_idx / N:
             return 0
 
         factor_num = 1 - np.cos(N * omega_o)
         factor_denom = 2 * (np.cos(2 * pi * bin_idx / N) - np.cos(omega_o))
         factor = factor_num - factor_denom
-        return factor * np.cos((N - 1) * omega_o + 2 * phi)
+        return factor * np.cos((N - 1) * omega_o + 2 * phi + 2*l*N)
 
     bin_idx = round_idx(freq_o * N / fs)
     left = get_left_pulse(omega_o, bin_idx, N)
     right = get_right_pulse(omega_o, bin_idx, N)
-    cross = get_cross(omega_o, bin_idx, N, phi)
+
+    cross = np.mean(np.array([get_cross(omega_o, bin_idx, N, phi, l) for l in range(L)]))
 
     return (left + right + cross) / N ** 2

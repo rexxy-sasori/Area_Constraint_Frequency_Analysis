@@ -66,15 +66,14 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
 
 
 def plot_tpr_vs_noise_level(noise_levels, tprs, freqs, compute_output_power, how_often=25, fpr_subj=0.05, N=16,
-                            fs=2000):
+                            fs=2000, L=1):
     num_freqs = tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
-            # print(10 * np.log10(compute_output_power[idx]))
-            plt.plot(10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N), tprs[:, idx],
+            plt.plot(10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N/ L), tprs[:, idx],
                      marker='o', markersize=5,
                      label='$k_o$ ' + str(k0s[idx]))
 
@@ -94,7 +93,7 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, freqs, compute_output_power, how
     for idx, f in enumerate(range(num_freqs)):
         if idx % how_often == 0:
             input_snr = - 10 * np.log10(noise_levels)
-            output_snr = 10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N)
+            output_snr = 10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N / L)
             plt.plot(input_snr, output_snr,
                      marker='o', markersize=5,
                      label='$k_o$ ' + str(k0s[idx]))
@@ -114,5 +113,6 @@ if __name__ == '__main__':
     fpr_subj = 0.05
     fs = 2000
     N = 16
+    L = 1
     noise_levels, tprs, freqs, out_power = tp_vs_snr(dirname, search_fpr=fpr_subj)
-    plot_tpr_vs_noise_level(noise_levels, tprs, freqs, out_power, fpr_subj=fpr_subj, N=N, fs=fs)
+    plot_tpr_vs_noise_level(noise_levels, tprs, freqs, out_power, fpr_subj=fpr_subj, N=N, fs=fs, L=1)
