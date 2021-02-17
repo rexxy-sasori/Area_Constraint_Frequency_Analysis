@@ -7,6 +7,7 @@ from scipy.interpolate import interp1d
 
 import matplotlib.pyplot as plt
 
+
 def find_tp_rate(result, search_fpr=0.1):
     roc = result.roc
     roc_func = interp1d(roc.fpr,roc.tpr)
@@ -69,7 +70,7 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05, N=1
 
 
 if __name__ == '__main__':
-    dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0/N_16/L_1'
+    dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0/N_16/L_2'
     fpr_subj = 0.05
     fs=2000
     N=16
