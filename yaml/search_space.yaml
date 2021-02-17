@@ -1,6 +1,6 @@
-freq_transform_method: ['fft']
-block_size: [16]
-num_blocks_avg: [1, 2, 5, 10]
+freq_transform_method: [ 'fft' ]
+block_size: [ 16 ]
+num_blocks_avg: [ 1, 2, 5, 10 ]
 noise_level: [ 39.810717055349734,
                31.622776601683793,
                25.118864315095795,
@@ -34,5 +34,5 @@ noise_level: [ 39.810717055349734,
                0.039810717055349734,
                0.03162277660168379,
                0.025118864315095794 ]
-phi: [0]
-detection_method: ['ml']
+phi: [ 0 ]
+detection_method: [ 'ml' ]

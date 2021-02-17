@@ -1,5 +1,6 @@
 import numpy as np
 from numba import njit
+
 from core.utils import filter_data
 
 
@@ -258,8 +259,8 @@ def dht_coeff_filter_jitter(block_size):
     idx_matrix = np.outer(idx, idx)
     random_phases = np.random.uniform(0, 2 * np.pi, size=(block_size, block_size))
 
-    filtered_random_phases = filter_data(random_phases.reshape(block_size*block_size), 1000/16, 2000)
-    filtered_random_phases = filtered_random_phases.reshape(block_size,block_size)
+    filtered_random_phases = filter_data(random_phases.reshape(block_size * block_size), 1000 / 16, 2000)
+    filtered_random_phases = filtered_random_phases.reshape(block_size, block_size)
 
     coeffs = np.sqrt(2) * np.cos(2 * np.pi * idx_matrix / block_size - np.pi / 4 + filtered_random_phases)
 
@@ -282,7 +283,7 @@ def dht_coeff_gaussian(block_size):
     # ditter_phase = np.array(block_size * [ditter_phase])
     # coeffs = np.sqrt(2) * np.cos(2 * np.pi * idx_matrix / block_size - np.pi / 4 + ditter_phase)
 
-    coeffs = np.random.normal(0,np.sqrt(10),size=(block_size,block_size))
+    coeffs = np.random.normal(0, np.sqrt(10), size=(block_size, block_size))
     return coeffs
 
 

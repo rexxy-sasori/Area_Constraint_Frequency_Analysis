@@ -14,7 +14,7 @@ dirs = {
     'J-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'SJ-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_single/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
     'D-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
-    #'FJ-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter_filter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
+    # 'FJ-DHT': '/home/hgeng4/pmsp/results/Fmethod_fht_jitter_filter/detection_ml/' + phi + '/N_16/' + L + '/inde_noise_level_0.5',
 }
 
 color = {
