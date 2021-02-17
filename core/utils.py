@@ -1,5 +1,8 @@
 import numpy as np
-from scipy.signal import butter,lfilter
+from scipy.signal import butter, lfilter
+
+pi = np.pi
+
 
 def reformat(arr, block_size, hop_size, num_sample):
     def index_func(i):
@@ -100,3 +103,53 @@ def filter_data(x, cutoff, fs):
     b, a = butter_low(cutoff, fs)
     y = lfilter(b, a, x)
     return y
+
+
+def round_idx(float):
+    floor = np.floor(float)
+    ceil = np.ceil(float)
+
+    if float - floor >= ceil - float:
+        return int(ceil)
+    else:
+        return int(floor)
+
+
+def dft_output_signal_power(freq_o, phi, fs=2000, N=16):
+    omega_o = 2 * pi * freq_o / fs
+    bin_idx = freq_o * N / fs
+
+    def get_left_pulse(omega_o, bin_idx, N):
+        if omega_o == 2 * pi * bin_idx / N:
+            return 0
+
+        left_center = omega_o + 2 * pi * bin_idx / N
+        mag = np.sin(N * left_center / 2) / np.sin(left_center / 2) / 2
+        sqmag = mag ** 2
+
+        return sqmag
+
+    def get_right_pulse(omega_o, bin_idx, N):
+        if omega_o == 2 * pi * bin_idx / N:
+            return (N / 2) ** 2
+
+        right_center = omega_o - 2 * pi * bin_idx / N
+        mag = np.sin(N * right_center / 2) / np.sin(right_center / 2) / 2
+        sqmag = mag ** 2
+
+        return sqmag
+
+    def get_cross(omega_o, bin_idx, N, phi):
+        if omega_o == 2 * pi * bin_idx / N:
+            return 0
+
+        factor_num = 1 - np.cos(N * omega_o)
+        factor_denom = 2 * (np.cos(2 * pi * bin_idx / N) - np.cos(omega_o))
+        factor = factor_num - factor_denom
+        return factor * np.cos((N - 1) * omega_o + 2 * phi)
+
+    left = get_left_pulse(omega_o, bin_idx, N)
+    right = get_right_pulse(omega_o, bin_idx, N)
+    cross = get_cross(omega_o, bin_idx, N, phi)
+
+    return (left + right + cross) / N ** 2
