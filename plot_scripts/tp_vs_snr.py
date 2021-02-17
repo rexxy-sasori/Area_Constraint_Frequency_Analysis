@@ -109,10 +109,10 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, freqs, compute_output_power, how
 
 
 if __name__ == '__main__':
-    dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0/N_16/L_1'
     fpr_subj = 0.05
     fs = 2000
     N = 16
-    L = 1
+    L = 2
+    dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0/N_16/L_'+str(L)
     noise_levels, tprs, freqs, out_power = tp_vs_snr(dirname, search_fpr=fpr_subj)
     plot_tpr_vs_noise_level(noise_levels, tprs, freqs, out_power, fpr_subj=fpr_subj, N=N, fs=fs, L=1)
