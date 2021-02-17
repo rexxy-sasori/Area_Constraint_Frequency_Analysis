@@ -62,8 +62,8 @@ def plot_tpr_vs_noise_level(noise_levels, tprs, how_often=25, fpr_subj=0.05, N=1
     plt.title('fpr constraint: {}'.format(fpr_subj))
     plt.tick_params('both', labelsize=15)
     plt.legend(loc='lower right', fontsize=15)
+    plt.ylim([-0.1, 1.1])
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
-    plt.ylim([-0.1,1.1])
     plt.clf()
     plt.close()
 
