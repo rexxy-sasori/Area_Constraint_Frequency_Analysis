@@ -34,7 +34,7 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
         if noise_level_str == '0' or noise_level_str == '10':
             continue
 
-        print(noise_level_dir)
+        #print(noise_level_dir)
         noise_level = float(noise_level_str)
         noise_levels.append(noise_level)
 
