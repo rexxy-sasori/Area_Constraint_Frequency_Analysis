@@ -19,10 +19,11 @@ HOSTS = [
     # 'csl-411-10.csl.illinois.edu',
     #
     # 'csl-411-13.csl.illinois.edu',
-    # 'csl-411-14.csl.illinois.edu',
+    'csl-411-14.csl.illinois.edu',
 
     'aristotle.csl.illinois.edu'
 ]
+
 PORT = 55558
 
 
@@ -160,11 +161,11 @@ class Client:
 
 
 if __name__ == '__main__':
-    c = Client()
+    client = Client()
 
     usr_configs_template = config.parse_config('./yaml/template.yaml')
     search_space = config.parse_search_space('./yaml/search_space.yaml')
     total_args = [[usr_configs_template, s] for s in search_space]
     random.shuffle(total_args)
 
-    c.query(total_args)
+    client.query(total_args)

@@ -7,7 +7,7 @@ import itertools
 import os
 from collections import OrderedDict
 
-import ruamel_yaml as yaml
+import ruamel.yaml as yaml
 
 
 class EmptyConfig:

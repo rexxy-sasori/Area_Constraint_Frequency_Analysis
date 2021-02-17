@@ -74,6 +74,8 @@ def experiment(usr_configs_template, hyper_param):
             shutil.rmtree(usr_configs_template.result_dir)
             pass
         else:
+            print('[INFO]: Directories completed from previous runs',
+                  usr_configs_template.result_dir)
             return
 
     print('[INFO]: Simulating: ', usr_configs_template.result_dir)
