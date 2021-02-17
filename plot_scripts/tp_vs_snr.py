@@ -51,6 +51,7 @@ def tp_vs_snr(parent_dir, search_fpr=0.1):
                 power = utils.dft_output_signal_power(freq, phase, fs, N)
                 freqs.append(freq)
                 compute_output_powers.append(power)
+                print(freq, power)
                 flag = 1
 
         noise_level_tprs[noise_level] = []
