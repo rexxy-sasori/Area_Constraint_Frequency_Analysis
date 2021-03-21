@@ -105,17 +105,18 @@ def filter_data(x, cutoff, fs):
     return y
 
 
-def dft_output_signal_power(freq_o, phi, fs=2000, N=16,L=1):
+def round_idx(float):
+    floor = np.floor(float)
+    ceil = np.ceil(float)
+
+    if float - floor >= ceil - float:
+        return int(ceil)
+    else:
+        return int(floor)
+
+
+def dft_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
     omega_o = 2 * pi * freq_o / fs
-
-    def round_idx(float):
-        floor = np.floor(float)
-        ceil = np.ceil(float)
-
-        if float - floor >= ceil - float:
-            return int(ceil)
-        else:
-            return int(floor)
 
     def get_left_pulse(omega_o, bin_idx, N):
         if omega_o == 2 * pi * bin_idx / N:
@@ -144,7 +145,7 @@ def dft_output_signal_power(freq_o, phi, fs=2000, N=16,L=1):
         factor_num = 1 - np.cos(N * omega_o)
         factor_denom = 2 * (np.cos(2 * pi * bin_idx / N) - np.cos(omega_o))
         factor = factor_num - factor_denom
-        return factor * np.cos((N - 1) * omega_o + 2 * phi + 2*l*N)
+        return factor * np.cos((N - 1) * omega_o + 2 * phi + 2 * l * N)
 
     bin_idx = round_idx(freq_o * N / fs)
     left = get_left_pulse(omega_o, bin_idx, N)
@@ -153,3 +154,45 @@ def dft_output_signal_power(freq_o, phi, fs=2000, N=16,L=1):
     cross = np.mean(np.array([get_cross(omega_o, bin_idx, N, phi, l) for l in range(L)]))
 
     return (left + right + cross) / N ** 2
+
+
+def dht_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
+    dft_power = dft_output_signal_power(freq_o, phi, fs, N, L)
+    omega_o = 2 * pi * freq_o / fs
+    bin_idx = round_idx(freq_o * N / fs)
+
+    def get_right_error(omega_o, bin_idx, N, phi, l):
+        if omega_o == 2 * pi * bin_idx / N:
+            return -(N / 2) ** 2 * np.sin(2 * phi)
+
+        right_center = omega_o - 2 * pi * bin_idx / N
+        mag = np.sin(N * right_center / 2) / np.sin(right_center / 2) / 2
+        sqmag = mag ** 2
+        return -sqmag * np.sin((N - 1) * right_center + 2 * phi + 2 * omega_o * N * l)
+
+    def get_left_error(omega_o, bin_idx, N, phi, l):
+        if omega_o == 2 * pi * bin_idx / N:
+            return 0
+        left_center = omega_o + 2 * pi * bin_idx / N
+        mag = np.sin(N * left_center / 2) / np.sin(left_center / 2) / 2
+        sqmag = mag ** 2
+        return sqmag * np.sin((N - 1) * left_center + 2 * phi + 2 * omega_o * N * l)
+
+    def get_cross(omega_o, bin_idx, N):
+        top = np.sin(2 * pi * bin_idx / N) * (1 - np.cos(N * omega_o))
+        bottom = 2 * (np.cos(2 * pi * bin_idx / N) - np.cos(omega_o))
+        return -top / bottom
+
+    left_error = np.mean(np.array([get_left_error(omega_o, bin_idx, N, phi, l) for l in range(L)]))
+    right_error = np.mean(np.array([get_right_error(omega_o, bin_idx, N, phi, l) for l in range(L)]))
+    cross = get_cross(omega_o, bin_idx, N)
+    total_error = (left_error + right_error + cross) / N ** 2
+
+    return dft_power + total_error
+
+
+__SIGNAL_POWER__={
+    'fft': dft_output_signal_power,
+    'fht': dht_output_signal_power,
+}
+
