@@ -160,7 +160,7 @@ if __name__ == '__main__':
     fpr_subj = 0.05
     fs = 2000
     N = 16
-    L = 1
+    L = 2
     fft_dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(L)
     fht_dirname = '/home/hgeng4/pmsp/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(L)
     noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirname, fpr_subj, 'fft')
