@@ -115,7 +115,7 @@ def dht_vs_dft_different_snr(dft_data, dht_data):
 
     num_plot = 0
     for idx, f in enumerate(range(num_freqs)):
-        if idx % dft_data.how_often == 0 and num_plot < 3:
+        if idx % dft_data.how_often == 0 and num_plot < 2:
             plt.plot(-10 * np.log10(dft_data.noise_levels / N / L), dft_data.tprs[:, idx],
                      marker='o', markersize=5,
                      label='$k_o$ ' + str(k0s[idx]) + ' method: ' + dft_data.method)
@@ -123,7 +123,7 @@ def dht_vs_dft_different_snr(dft_data, dht_data):
 
     num_plot = 0
     for idx, f in enumerate(range(num_freqs)):
-        if idx % dht_data.how_often == 0 and num_plot < 3:
+        if idx % dht_data.how_often == 0 and num_plot < 2:
             plt.plot(-10 * np.log10(dht_data.noise_levels / N / L), dht_data.tprs[:, idx],
                      marker='o', markersize=5,
                      label='$k_o$ ' + str(k0s[idx]) + ' method: ' + dht_data.method)
