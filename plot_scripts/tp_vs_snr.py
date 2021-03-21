@@ -173,3 +173,5 @@ if __name__ == '__main__':
         compute_output_power=out_power_fht, how_often=25,
         fpr_subj=0.05, N=16, fs=2000, L=1, method='DHT'
     )
+
+    dht_vs_dft_different_snr(dft_plot_data, dht_plot_data)
