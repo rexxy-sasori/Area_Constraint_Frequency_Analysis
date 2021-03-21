@@ -134,7 +134,7 @@ def dht_vs_dft_different_snr(dft_data, dht_data):
     plt.ylabel('$p_{tp}$', fontsize=15)
 
     plt.tick_params('both', labelsize=15)
-    plt.legend(loc='lower right', fontsize=15,ncol=2)
+    plt.legend(loc='upper left', fontsize=15,ncol=2)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
     plt.clf()
     plt.close()
