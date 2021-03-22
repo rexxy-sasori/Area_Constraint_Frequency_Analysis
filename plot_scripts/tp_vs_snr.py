@@ -160,11 +160,11 @@ if __name__ == '__main__':
     fpr_subj = 0.05
     fs = 2000
     N = 16
-    L = 5
+    L = 1
     fft_dirname = '/home/hgeng4/pmsp/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(L)
-    fht_dirname = '/home/hgeng4/pmsp/results/Fmethod_fht_jitter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(L)
+    fht_dirname = '/home/hgeng4/pmsp/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(L)
     noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirname, fpr_subj, 'fft')
-    noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirname, fpr_subj, 'fht_jitter')
+    noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirname, fpr_subj, 'fht_ditter')
 
     dft_plot_data = PlotData(
         noise_levels=noise_levels_fft, tprs=tprs_fft, freqs=freqs_fft,
@@ -175,7 +175,7 @@ if __name__ == '__main__':
     dht_plot_data = PlotData(
         noise_levels=noise_levels_fht, tprs=tprs_fht, freqs=freqs_fht,
         compute_output_power=out_power_fht, how_often=25,
-        fpr_subj=0.05, N=16, fs=2000, L=1, method='J-DHT'
+        fpr_subj=0.05, N=16, fs=2000, L=1, method='D-DHT'
     )
 
     dht_vs_dft_different_snr(dft_plot_data, dht_plot_data)
