@@ -191,8 +191,18 @@ def dht_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
     return dft_power + total_error
 
 
+def dht_jitter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
+    return 0
+
+
+def dht_ditter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
+    return 0
+
+
 __SIGNAL_POWER__={
     'fft': dft_output_signal_power,
     'fht': dht_output_signal_power,
+    'fht_jitter': dht_jitter_output_signal_power,
+    'fht_ditter': dht_ditter_output_signal_power
 }
 
