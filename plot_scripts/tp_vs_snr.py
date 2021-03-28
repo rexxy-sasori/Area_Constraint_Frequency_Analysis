@@ -37,8 +37,7 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
     tprs = []
 
     freqs = []
-    compute_output_powers = []
-    flag = 0
+    compute_output_powers = {}
 
     for idx, noise_level_dir in enumerate(noise_level_dirs):
         noise_level_str = os.path.split(noise_level_dir)[1]
@@ -55,17 +54,15 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
         results = sorted([torch.load(p).get('result') for p in result_paths],
                          key=lambda x: x.usr_configs.signal.freqs[0])
 
-        if flag == 0:
-            for r in results:
-                freq = r.usr_configs.signal.freqs[0]
-                fs = r.usr_configs.signal.fs
-                phase = r.usr_configs.signal.phases[0]
-                N = r.usr_configs.signal.block_size
-                L = r.usr_configs.signal.num_blocks_avg
-                output_power = signal_generator.get_output_power(freq, phase, noise_level, method, fs, N, L)
-                freqs.append(freq)
-                compute_output_powers.append(output_power)
-                flag = 1
+        for r in results:
+            freq = r.usr_configs.signal.freqs[0]
+            fs = r.usr_configs.signal.fs
+            phase = r.usr_configs.signal.phases[0]
+            N = r.usr_configs.signal.block_size
+            L = r.usr_configs.signal.num_blocks_avg
+            output_power = signal_generator.get_output_power(freq, phase, noise_level, method, fs, N, L)
+            freqs.append(freq)
+            compute_output_powers[noise_level] = output_power
 
         noise_level_tprs[noise_level] = []
         for r in results:
@@ -73,7 +70,6 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
             noise_level_tprs[noise_level].append(tpr)
 
     print(compute_output_powers)
-    assert 1==2
     noise_levels = sorted(noise_levels)
     for noise_level in noise_levels:
         tprs.append(np.array(noise_level_tprs[noise_level]))
@@ -184,9 +180,7 @@ class PlotData:
         self.noise_levels = noise_levels
         self.tprs = tprs
         self.freqs = freqs
-        self.compute_output_power = np.array(compute_output_power)
-        #print(self.compute_output_power)
-        #assert 1==2
+        self.compute_output_power = compute_output_power
         self.how_often = how_often
         self.fpr_subj = fpr_subj
         self.N = N
