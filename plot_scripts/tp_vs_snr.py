@@ -182,7 +182,7 @@ def get_all_output_noise_power(Ls, noise_levels, freq_os, N=16, kernel='fft'):
     for lidx, l in enumerate(Ls):
         for fidx, f0s in enumerate(freq_os):
             for nidx, noise_level in enumerate(noise_levels):
-                print(l, f0s, noise_level)
+                print(l, f0s, noise_level, kernel)
                 ret[lidx, fidx, nidx] = signal_generator.get_output_noise_power(
                     f0s, noise_level=noise_level, kernel=kernel, fs=2000, N=N, L=l
                 )
@@ -231,8 +231,6 @@ if __name__ == '__main__':
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
         noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirnames[idx], fpr_subj, 'fht')
-        fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft')
-        fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht')
         # noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
         # noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
 
@@ -250,6 +248,9 @@ if __name__ == '__main__':
 
         dft_datas.append(dft_plot_data)
         dht_datas.append(dht_plot_data)
+
+    fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft')
+    fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht')
 
     compare_tpr(dft_datas, dht_datas, compare_k0)
     compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_power)
