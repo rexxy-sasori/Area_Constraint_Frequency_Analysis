@@ -53,7 +53,7 @@ def plot_auc_roc_single_experiment(result_dir):
     results_identifier = os.path.join(result_dir, '*tar')
     result_paths = glob.glob(results_identifier)
 
-    if len(result_paths) != 101:
+    if len(result_paths) != 5:
         return
 
     print('working on dir: ', result_dir)
@@ -76,7 +76,7 @@ def plot_auc_roc_single_experiment(result_dir):
 
 
 if __name__ == '__main__':
-    result_dirs = glob.glob('/home/hgeng4/pmsp/results/*/*/*/*/*/*')
+    result_dirs = glob.glob('/home/hgeng4/PMSP/results/*/*/*/*/*/*')
     # for result_dir in result_dirs:
     #     if 'noise_level_0' in result_dir:
     #         continue
