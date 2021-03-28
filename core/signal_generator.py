@@ -152,13 +152,18 @@ def get_output_noise(L, N, noise_level, kernel='fft', transform=False):
     return input_signal, observations
 
 
-def get_output_power(freq_o, phi, noise_level, kernel, fs=2000, N=16, L=1):
+def get_output_signal_power(freq_o, phi, kernel, fs=2000, N=16, L=1):
     _, sm_signal = get_output_signal(L, N, freq_o, fs, phi, kernel, True)
-    _, sm_noise = get_output_noise(L, N, noise_level, kernel, True)
     bin_idx = round_idx(freq_o * N / fs)
 
     output_signal_power = sm_signal[:, :, bin_idx].mean()
+
+    return output_signal_power
+
+
+def get_output_noise_power(bin_idx, noise_level, kernel, fs=2000, N=16, L=1):
+    _, sm_noise = get_output_noise(L, N, noise_level, kernel, True)
+    bin_idx = round_idx(freq_o * N / fs)
     output_noise_power = sm_noise[:, :, bin_idx].mean()
 
-    return output_signal_power, output_noise_power
-
+    return output_noise_power
