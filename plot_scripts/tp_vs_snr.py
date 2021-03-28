@@ -168,10 +168,10 @@ if __name__ == '__main__':
     N = 16
     L = [1,2,5,10]
 
-    fft_dirnames = ['/home/hgeng4/PMSP/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
-    fht_dirnames = ['/home/hgeng4/PMSP/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
-    jdht_dirnames = ['/home/hgeng4/PMSP/results/Fmethod_fht_jitter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
-    ddht_dirnames = ['/home/hgeng4/PMSP/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
+    fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
+    fht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
+    jdht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht_jitter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
+    ddht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
 
     dft_datas, dht_datas = [], []
     for idx, l in enumerate(L):
