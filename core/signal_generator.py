@@ -104,7 +104,7 @@ def get_output_signal(L, N, freq_o, fs, phi, kernel='fft', transform=False):
     setattr(signal_configs, 'fs', fs)
     setattr(signal_configs, 'num_pos_decision', Nd)
     setattr(signal_configs, 'block_size', N)
-    setattr(signal_configs, 'num_block_avg', L)
+    setattr(signal_configs, 'num_blocks_avg', L)
     setattr(signal_configs, 'hop_size', N * L)
     setattr(signal_configs, 'freqs', [freq_o])
     setattr(signal_configs, 'phases', [phi])
