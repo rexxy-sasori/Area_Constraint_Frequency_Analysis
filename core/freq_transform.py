@@ -1,7 +1,7 @@
 import numpy as np
 from numba import njit
 
-from core.utils import filter_data, uniform_sign_quant
+from core.utils import filter_data
 
 
 @njit
@@ -84,7 +84,7 @@ def dht_dft_bin(seq, length, coeff, qps=False, bps=0, cps=0):
     total = 0
     for idx in range(length):
         total = total + coeff[idx] * seq[idx]
-        total = uniform_sign_quant(total, bps, cps, qps)
+        #total = uniform_sign_quant(total, bps, cps, qps)
     return total
 
 
