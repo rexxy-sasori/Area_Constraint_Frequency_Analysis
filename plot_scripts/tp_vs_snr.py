@@ -228,7 +228,7 @@ class PlotData:
         self.noise_levels = noise_levels
         self.tprs = tprs
         self.freqs = freqs
-        self.compute_out_power = compute_output_power
+        self.compute_output_power = compute_output_power
         self.how_often = how_often
         self.fpr_subj = fpr_subj
         self.N = N
