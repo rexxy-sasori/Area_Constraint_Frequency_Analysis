@@ -118,9 +118,9 @@ def compare(dft_datas, dht_datas):
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
-    for idx, l in enumerate([1,2,5,10]):
-        dft_data = dft_datas[idx]
-        dht_data = dht_datas[idx]
+    for lidx, l in enumerate([1,2,5,10]):
+        dft_data = dft_datas[lidx]
+        dht_data = dht_datas[lidx]
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == 3:
                 plt.plot(-10 * np.log10(dft_data.noise_levels), dft_data.tprs[:, idx],
