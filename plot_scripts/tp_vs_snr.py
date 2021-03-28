@@ -118,7 +118,7 @@ def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == freq_compare:
                 plt.plot(-10 * np.log10(data.noise_levels), data.tprs[:, idx],
-                         marker=marker, markersize=5,
+                         marker=marker, markersize=10,
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
