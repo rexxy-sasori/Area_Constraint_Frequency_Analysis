@@ -122,13 +122,13 @@ def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
-def compare(dft_datas, dht_datas):
+def compare(dft_datas, dht_datas, compare_k0 = 3):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
-    compare_k0 = 3
+    compare_k0 = compare_k0
     loop_through_plot_data(dft_datas, num_freqs, k0s, compare_k0, 'o')
     loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
 
@@ -160,10 +160,11 @@ class PlotData:
 
 
 if __name__ == '__main__':
-    fpr_subj = 0.001
+    fpr_subj = 0.0001
     fs = 2000
     N = 16
     L = [1,2,5,10]
+    compare_k0 = 3
 
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
     fht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
@@ -192,5 +193,5 @@ if __name__ == '__main__':
         dft_datas.append(dft_plot_data)
         dht_datas.append(dht_plot_data)
 
-    compare(dft_datas, dht_datas)
+    compare(dft_datas, dht_datas, compare_k0)
 
