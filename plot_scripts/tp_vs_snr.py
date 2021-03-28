@@ -4,10 +4,12 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from scipy.interpolate import interp1d
 from matplotlib.lines import Line2D
-from core import utils, signal_generator
+from scipy.interpolate import interp1d
 
+from core import signal_generator
+
+np.seterr(divide='raise')
 color = [
     '#1f77b4',
     '#ff7f0e',
@@ -173,7 +175,8 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
             if k0s[idx] == freq_compare:
                 try:
                     input_snr = - 10 * np.log10(data.noise_levels)
-                    output_snr = 10 * np.log10(data.compute_output_power[idx]) - 10 * np.log10(data.noise_levels / N / l)
+                    output_snr = 10 * np.log10(data.compute_output_power[idx]) - 10 * np.log10(
+                        data.noise_levels / N / l)
                 except FloatingPointError:
                     continue
 
@@ -239,7 +242,7 @@ if __name__ == '__main__':
     fs = 2000
     N = 16
     L = [1, 2, 5, 10]
-    compare_k0 = 3.75
+    compare_k0 = 3
 
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
                     in L]
