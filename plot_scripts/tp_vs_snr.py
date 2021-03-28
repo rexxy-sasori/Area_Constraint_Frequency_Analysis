@@ -174,16 +174,14 @@ def compare_snrF(dft_datas, dht_datas, compare_k0=3):
     plt.close()
 
 
-def get_output_noise_power(Ls, noise_levels, N=16, kernel='fft'):
-    k0s = np.linspace(3, 4, 5)
-    freq_o = 0
-    ret = np.zeros((len(Ls), len(k0s), len(noise_levels)))
+def get_output_noise_power(Ls, noise_levels, freq_os, N=16, kernel='fft'):
+    ret = np.zeros((len(Ls), len(freq_os), len(noise_levels)))
 
     for lidx, l in enumerate(Ls):
-        for kidx, k0s in enumerate(k0s):
+        for fidx, f0s in enumerate(freq_os):
             for nidx, noise_level in enumerate(noise_levels):
-                ret[lidx, kidx, nidx] = signal_generator.get_output_noise_power(
-                    freq_o, noise_level=noise_level, kernel=kernel, fs=2000, N=N, L=l
+                ret[lidx, fidx, nidx] = signal_generator.get_output_noise_power(
+                    f0s, noise_level=noise_level, kernel=kernel, fs=2000, N=N, L=l
                 )
 
     return ret
