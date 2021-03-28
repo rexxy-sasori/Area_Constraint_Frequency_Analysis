@@ -120,15 +120,17 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
     plt.close()
 
 
-def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*'):
+def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*', noise_power=None):
     for lidx, l in enumerate([1, 2, 5, 10]):
         data = datas[lidx]
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == freq_compare:
                 try:
                     input_snr = - 10 * np.log10(data.noise_levels)
-                    output_snr = data.compute_output_power[0] / data.compute_output_power[1]
-                    output_snr = 10 * np.log10(output_snr)
+
+                    output_signal_power = data.compute_output_power
+                    output_noise_power = noise_power[lidx, idx, :]
+                    output_snr = 10*np.log10(output_signal_power/output_noise_power)
                 except FloatingPointError:
                     continue
 
@@ -142,16 +144,16 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
                 )
 
 
-def compare_snrF(dft_datas, dht_datas, compare_k0=3):
+def compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_power):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
     compare_k0 = compare_k0
-    loop_through_plot_data_snrF(dft_datas, num_freqs, k0s, compare_k0, 'o')
+    loop_through_plot_data_snrF(dft_datas, num_freqs, k0s, compare_k0, 'o', fft_noise_power)
     if compare_k0 != 3:
-        loop_through_plot_data_snrF(dht_datas, num_freqs, k0s, compare_k0, '*')
+        loop_through_plot_data_snrF(dht_datas, num_freqs, k0s, compare_k0, '*', fht_noise_power)
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
@@ -174,7 +176,7 @@ def compare_snrF(dft_datas, dht_datas, compare_k0=3):
     plt.close()
 
 
-def get_output_noise_power(Ls, noise_levels, freq_os, N=16, kernel='fft'):
+def get_all_output_noise_power(Ls, noise_levels, freq_os, N=16, kernel='fft'):
     ret = np.zeros((len(Ls), len(freq_os), len(noise_levels)))
 
     for lidx, l in enumerate(Ls):
@@ -223,9 +225,13 @@ if __name__ == '__main__':
         L]
 
     dft_datas, dht_datas = [], []
+    fft_noise_power = None
+    fht_noise_power = None
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
         noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirnames[idx], fpr_subj, 'fht')
+        fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft')
+        fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht')
         # noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
         # noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
 
@@ -234,7 +240,7 @@ if __name__ == '__main__':
             compute_output_power=out_power_fft, how_often=25,
             fpr_subj=0.05, N=16, fs=2000, L=l, method='DFT'
         )
-        print(freqs_fft)
+
         dht_plot_data = PlotData(
             noise_levels=noise_levels_fht, tprs=tprs_fht, freqs=freqs_fht,
             compute_output_power=out_power_fht, how_often=25,
@@ -245,4 +251,4 @@ if __name__ == '__main__':
         dht_datas.append(dht_plot_data)
 
     compare_tpr(dft_datas, dht_datas, compare_k0)
-    compare_snrF(dft_datas, dht_datas, compare_k0)
+    compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_power)
