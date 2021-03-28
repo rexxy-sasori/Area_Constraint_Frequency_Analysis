@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from scipy.interpolate import interp1d
-
+from matplotlib.lines import Line2D
 from core import utils, signal_generator
 
 color = [
@@ -145,12 +145,22 @@ def compare(dft_datas, dht_datas, compare_k0=3):
     loop_through_plot_data(dft_datas, num_freqs, k0s, compare_k0, 'o')
     loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
 
+    legend_elements = [
+        Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='*', color='w', label='DHT', markerfacecolor='k', markersize=15),
+
+        Line2D([0], [0], color=color[0], lw=4, label='L=1'),
+        Line2D([0], [0], color=color[1], lw=4, label='L=2'),
+        Line2D([0], [0], color=color[2], lw=4, label='L=5'),
+        Line2D([0], [0], color=color[3], lw=4, label='L=10'),
+    ]
+
     plt.grid()
     plt.xlabel('$SNR_T$' + '(dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
 
     plt.tick_params('both', labelsize=15)
-    plt.legend(loc='best', fontsize=15, ncol=2)
+    plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=2)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
     plt.clf()
     plt.close()
