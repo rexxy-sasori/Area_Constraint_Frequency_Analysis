@@ -252,8 +252,8 @@ if __name__ == '__main__':
         dft_datas.append(dft_plot_data)
         dht_datas.append(dht_plot_data)
 
-    fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft') if fft_noise_power is None
-    fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht') if fht_noise_power is None
+    fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft') if fft_noise_power is None else fft_noise_power
+    fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht') if fht_noise_power is None else fht_noise_power
 
     np.save('fft_noise_power.npy', fft_noise_power)
     np.save('fht_noise_power.npy', fht_noise_power)
