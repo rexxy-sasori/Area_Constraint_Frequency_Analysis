@@ -37,7 +37,8 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
     tprs = []
 
     freqs = []
-    compute_output_powers = {}
+    compute_output_powers = []
+    flag = 0
 
     for idx, noise_level_dir in enumerate(noise_level_dirs):
         noise_level_str = os.path.split(noise_level_dir)[1]
@@ -54,23 +55,23 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
         results = sorted([torch.load(p).get('result') for p in result_paths],
                          key=lambda x: x.usr_configs.signal.freqs[0])
 
-        for r in results:
-            freq = r.usr_configs.signal.freqs[0]
-            fs = r.usr_configs.signal.fs
-            phase = r.usr_configs.signal.phases[0]
-            N = r.usr_configs.signal.block_size
-            L = r.usr_configs.signal.num_blocks_avg
-            output_power = signal_generator.get_output_power(freq, phase, noise_level, method, fs, N, L)
-            freqs.append(freq)
-            compute_output_powers[noise_level] = output_power
+        if flag == 0:
+            for r in results:
+                freq = r.usr_configs.signal.freqs[0]
+                fs = r.usr_configs.signal.fs
+                phase = r.usr_configs.signal.phases[0]
+                N = r.usr_configs.signal.block_size
+                L = r.usr_configs.signal.num_blocks_avg
+                output_power = signal_generator.get_output_signal_power(freq, phase, method, fs, N, L)
+                freqs.append(freq)
+                compute_output_powers.append(output_power)
+                flag = 1
 
         noise_level_tprs[noise_level] = []
         for r in results:
             tpr = find_tp_rate(r, search_fpr)
             noise_level_tprs[noise_level].append(tpr)
 
-    print(compute_output_powers)
-    assert 1==2
     noise_levels = sorted(noise_levels)
     for noise_level in noise_levels:
         tprs.append(np.array(noise_level_tprs[noise_level]))
@@ -126,9 +127,8 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
             if k0s[idx] == freq_compare:
                 try:
                     input_snr = - 10 * np.log10(data.noise_levels)
-                    print(data.compute_output_power)
-                    output_snr = data.compute_output_power[0,:]/data.compute_output_power[1,:]
-                    output_snr = 10*np.log10(output_snr)
+                    output_snr = data.compute_output_power[0] / data.compute_output_power[1]
+                    output_snr = 10 * np.log10(output_snr)
                 except FloatingPointError:
                     continue
 
