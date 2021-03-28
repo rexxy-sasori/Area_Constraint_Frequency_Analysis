@@ -112,34 +112,31 @@ def plot_tpr_vs_noise_level(
     plt.close()
 
 
+def loop_through_plot_data(datas, num_freqs, k0s):
+    for lidx, l in enumerate([1,2,5,10]):
+        data = datas[lidx]
+        for idx, f in enumerate(range(num_freqs)):
+            if k0s[idx] == 3:
+                plt.plot(-10 * np.log10(data.noise_levels), data.tprs[:, idx],
+                         marker='o', markersize=5,
+                         label='$L=$' + str(l) + ', ' + data.method)
+
+
 def compare(dft_datas, dht_datas):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
-    for lidx, l in enumerate([1,2,5,10]):
-        dft_data = dft_datas[lidx]
-        dht_data = dht_datas[lidx]
-        for idx, f in enumerate(range(num_freqs)):
-            if k0s[idx] == 3:
-                #print(dft_data.tprs)
-                plt.plot(-10 * np.log10(dft_data.noise_levels), dft_data.tprs[:, idx],
-                         marker='o', markersize=5,
-                         label='$L=$' + str(l) + ', ' + dft_data.method)
-
-        for idx, f in enumerate(range(num_freqs)):
-            if k0s[idx] == 3:
-                plt.plot(-10 * np.log10(dht_data.noise_levels), dht_data.tprs[:, idx],
-                         marker='o', markersize=5,
-                         label='$L=$' + str(l) + ', ' + dht_data.method)
+    loop_through_plot_data(dft_datas, num_freqs, k0s)
+    loop_through_plot_data(dht_datas, num_freqs, k0s)
 
     plt.grid()
     plt.xlabel('$SNR_T$'+'(dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
 
     plt.tick_params('both', labelsize=15)
-    plt.legend(loc='upper left', fontsize=15, ncol=2)
+    plt.legend(loc='best', fontsize=15, ncol=2)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
     plt.clf()
     plt.close()
@@ -188,7 +185,7 @@ if __name__ == '__main__':
         dht_plot_data = PlotData(
             noise_levels=noise_levels_fht, tprs=tprs_fht, freqs=freqs_fht,
             compute_output_power=out_power_fht, how_often=25,
-            fpr_subj=0.05, N=16, fs=2000, L=l, method='D-DHT'
+            fpr_subj=0.05, N=16, fs=2000, L=l, method='DHT'
         )
 
         dft_datas.append(dft_plot_data)
