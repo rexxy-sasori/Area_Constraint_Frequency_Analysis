@@ -145,8 +145,7 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
 
     compare_k0 = compare_k0
     loop_through_plot_data_tpr(dft_datas, num_freqs, k0s, compare_k0, 'o')
-    if compare_k0 != 3:
-        loop_through_plot_data_tpr(dht_datas, num_freqs, k0s, compare_k0, '*')
+    loop_through_plot_data_tpr(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
@@ -199,7 +198,8 @@ def compare_snrF(dft_datas, dht_datas, compare_k0=3):
 
     compare_k0 = compare_k0
     loop_through_plot_data_snrF(dft_datas, num_freqs, k0s, compare_k0, 'o')
-    loop_through_plot_data_snrF(dht_datas, num_freqs, k0s, compare_k0, '*')
+    if compare_k0 != 3:
+        loop_through_plot_data_snrF(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
