@@ -187,7 +187,7 @@ if __name__ == '__main__':
     fs = 2000
     N = 16
     L = [1, 2, 5, 10]
-    compare_k0 = 3.5
+    compare_k0 = 3.75
 
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
                     in L]
