@@ -118,51 +118,47 @@ def get_output_signal(L, N, freq_o, fs, phi, kernel='fft', transform=False):
     generator = InputSignalGenerator(signal_configs, noise_configs)
     input_signal, _ = generator.get()
     signal = input_signal[0:Nd, :, :]
-
     observations, _ = freq_transform.transform_all(signal, transform_configs, signal_configs) if transform else None
 
     return input_signal, observations
 
 
-def dft_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fft', True)
+def get_output_noise(L, N, noise_level, kernel='fft', transform=False):
+    signal_configs = UsrConfigs({})
+    noise_configs = UsrConfigs({})
+    transform_configs = UsrConfigs({})
+    init_args = UsrConfigs({})
+    Nd = 10000
 
+    setattr(signal_configs, 'fs', 2000)
+    setattr(signal_configs, 'num_pos_decision', Nd)
+    setattr(signal_configs, 'block_size', N)
+    setattr(signal_configs, 'num_blocks_avg', L)
+    setattr(signal_configs, 'hop_size', N * L)
+    setattr(signal_configs, 'freqs', [3])
+    setattr(signal_configs, 'phases', [np.pi/4])
+    setattr(signal_configs, 'amps', [1])
+    setattr(noise_configs, 'name', 'rvs')
+    setattr(init_args, 'slope', 1)
+    setattr(init_args, 'steady_state', noise_level)
+    setattr(init_args, 'top', noise_level)
+    setattr(noise_configs, 'init_args', init_args)
+    setattr(transform_configs, 'name', kernel)
+    generator = InputSignalGenerator(signal_configs, noise_configs)
+    input_signal, _ = generator.get()
+    noise = input_signal[Nd:2*Nd, :, :]
+    observations, _ = freq_transform.transform_all(noise, transform_configs, signal_configs) if transform else None
+
+    return input_signal, observations
+
+
+def get_output_power(freq_o, phi, noise_level, kernel, fs=2000, N=16, L=1):
+    _, sm_signal = get_output_signal(L, N, freq_o, fs, phi, kernel, True)
+    _, sm_noise = get_output_noise(L, N, noise_level, kernel, True)
     bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].mean()
 
-    return output_power
+    output_signal_power = sm_signal[:, :, bin_idx].mean()
+    output_noise_power = sm_noise[:, :, bin_idx].mean()
 
+    return output_signal_power, output_noise_power
 
-def dht_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fht', True)
-
-    bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].mean()
-
-    return output_power
-
-
-def dht_jitter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fht_jitter', True)
-
-    bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].mean()
-
-    return output_power
-
-
-def dht_ditter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fht_ditter', True)
-
-    bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].mean()
-
-    return output_power
-
-
-__SIGNAL_POWER__ = {
-    'fft': dft_output_signal_power,
-    'fht': dht_output_signal_power,
-    'fht_jitter': dht_jitter_output_signal_power,
-    'fht_ditter': dht_ditter_output_signal_power
-}

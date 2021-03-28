@@ -61,8 +61,8 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
                 fs = r.usr_configs.signal.fs
                 phase = r.usr_configs.signal.phases[0]
                 N = r.usr_configs.signal.block_size
-                signal_power_kernel = signal_generator.__SIGNAL_POWER__.get(method)
-                output_power = signal_power_kernel(freq, phase, fs, N)
+                L = r.usr_configs.signal.num_blocks_avg
+                output_power = signal_generator.get_output_power(freq, phase, noise_level, method, fs, N, L)
                 freqs.append(freq)
                 compute_output_powers.append(output_power)
                 flag = 1
@@ -77,54 +77,6 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
         tprs.append(np.array(noise_level_tprs[noise_level]))
 
     return np.array(noise_levels), np.array(tprs), np.array(freqs), np.array(compute_output_powers)
-
-
-def plot_tpr_vs_noise_level(
-        noise_levels,
-        tprs, freqs,
-        compute_output_power,
-        how_often=25, fpr_subj=0.05,
-        N=16, fs=2000, L=1
-):
-    num_freqs = tprs.shape[1]
-    print(num_freqs)
-    plt.figure(figsize=(10, 5))
-    k0s = np.linspace(3, 4, num_freqs)
-    for idx, f in enumerate(range(num_freqs)):
-        if idx % how_often == 0:
-            plt.plot(10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N / L), tprs[:, idx],
-                     marker='o', markersize=5,
-                     label='$k_o$ ' + str(k0s[idx]))
-
-    plt.grid()
-    plt.xlabel('$\\text{SNR}_{\cal F}$', fontsize=15)
-    plt.ylabel('$p_{tp}$', fontsize=15)
-    plt.title('fpr constraint: {}'.format(fpr_subj), fontsize=15)
-    plt.tick_params('both', labelsize=15)
-    plt.legend(loc='lower right', fontsize=15)
-    plt.ylim([-0.1, 1.1])
-    plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
-    plt.clf()
-    plt.close()
-
-    plt.figure(figsize=(10, 5))
-    k0s = np.linspace(3, 4, num_freqs)
-    for idx, f in enumerate(range(num_freqs)):
-        if idx % how_often == 0:
-            input_snr = - 10 * np.log10(noise_levels)
-            output_snr = 10 * np.log10(compute_output_power[idx]) - 10 * np.log10(noise_levels / N / L)
-            plt.plot(input_snr, output_snr,
-                     marker='o', markersize=5,
-                     label='$k_o$ ' + str(k0s[idx]))
-    plt.grid()
-    plt.xlabel('Input SNR(dB)', fontsize=15)
-    plt.ylabel('Detector Input SNR(dB)', fontsize=15)
-    plt.title('Detector Input SNR (dB) vs. Input SNR (dB)', fontsize=15)
-    plt.tick_params('both', labelsize=15)
-    plt.legend(loc='lower right', fontsize=15)
-    plt.savefig('/home/hgeng4/pmsp/plots/dnr_snr.png')
-    plt.clf()
-    plt.close()
 
 
 def loop_through_plot_data_tpr(datas, num_freqs, k0s, freq_compare=3, marker='*'):
@@ -175,8 +127,8 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
             if k0s[idx] == freq_compare:
                 try:
                     input_snr = - 10 * np.log10(data.noise_levels)
-                    output_snr = 10 * np.log10(data.compute_output_power[idx]) - 10 * np.log10(
-                        data.noise_levels / N / l)
+                    output_snr = data.compute_output_power[0]/data.compute_output_power[1]
+                    output_snr = 10*np.log10(output_snr)
                 except FloatingPointError:
                     continue
 
