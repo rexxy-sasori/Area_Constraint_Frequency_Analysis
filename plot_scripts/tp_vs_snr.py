@@ -128,7 +128,7 @@ def compare(dft_datas, dht_datas):
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
-    compare_k0 = 3.25
+    compare_k0 = 3
     loop_through_plot_data(dft_datas, num_freqs, k0s, compare_k0, 'o')
     loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
 
