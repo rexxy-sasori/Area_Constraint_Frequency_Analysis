@@ -119,16 +119,16 @@ def get_output_signal(L, N, freq_o, fs, phi, kernel='fft', transform=False):
     input_signal, _ = generator.get()
     signal = input_signal[0:Nd, :, :]
 
-    transformed_signal = freq_transform.transform_all(signal, transform_configs, signal_configs) if transform else None
+    observations, _ = freq_transform.transform_all(signal, transform_configs, signal_configs) if transform else None
 
-    return input_signal, transformed_signal
+    return input_signal, observations
 
 
 def dft_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
     input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fft', True)
 
     bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].var()
+    output_power = transformed_signal[:, :, bin_idx].mean()
 
     return output_power
 
@@ -137,7 +137,7 @@ def dht_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
     input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fht', True)
 
     bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].var()
+    output_power = transformed_signal[:, :, bin_idx].mean()
 
     return output_power
 
@@ -146,7 +146,7 @@ def dht_jitter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
     input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fht_jitter', True)
 
     bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].var()
+    output_power = transformed_signal[:, :, bin_idx].mean()
 
     return output_power
 
@@ -155,7 +155,7 @@ def dht_ditter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
     input_signal, transformed_signal = get_output_signal(L, N, freq_o, fs, phi, 'fht_ditter', True)
 
     bin_idx = round_idx(freq_o * N / fs)
-    output_power = transformed_signal[:, :, bin_idx].var()
+    output_power = transformed_signal[:, :, bin_idx].mean()
 
     return output_power
 
