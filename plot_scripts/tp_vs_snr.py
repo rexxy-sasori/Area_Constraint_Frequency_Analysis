@@ -125,7 +125,7 @@ def plot_tpr_vs_noise_level(
     plt.close()
 
 
-def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
+def loop_through_plot_data_tpr(datas, num_freqs, k0s, freq_compare=3, marker='*'):
     for lidx, l in enumerate([1, 2, 5, 10]):
         data = datas[lidx]
         for idx, f in enumerate(range(num_freqs)):
@@ -135,15 +135,15 @@ def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
-def compare(dft_datas, dht_datas, compare_k0=3):
+def compare_tpr(dft_datas, dht_datas, compare_k0=3):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
     compare_k0 = compare_k0
-    loop_through_plot_data(dft_datas, num_freqs, k0s, compare_k0, 'o')
-    loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
+    loop_through_plot_data_tpr(dft_datas, num_freqs, k0s, compare_k0, 'o')
+    loop_through_plot_data_tpr(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
@@ -162,6 +162,58 @@ def compare(dft_datas, dht_datas, compare_k0=3):
     plt.tick_params('both', labelsize=15)
     plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=1)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
+    plt.clf()
+    plt.close()
+
+
+def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*'):
+    for lidx, l in enumerate([1, 2, 5, 10]):
+        data = datas[lidx]
+        for idx, f in enumerate(range(num_freqs)):
+            if k0s[idx] == freq_compare:
+                try:
+                    input_snr = - 10 * np.log10(data.noise_levels)
+                    output_snr = 10 * np.log10(data.compute_output_power[idx]) - 10 * np.log10(data.noise_levels / N / l)
+                except FloatingPointError:
+                    continue
+
+                plt.plot(
+                    input_snr,
+                    output_snr,
+                    marker=marker,
+                    markersize=8,
+                    color=color[lidx],
+                    label='$L=$' + str(l) + ', ' + data.method
+                )
+
+
+def compare_snrF(dft_datas, dht_datas, compare_k0=3):
+    num_freqs = dft_datas[0].tprs.shape[1]
+    print(num_freqs)
+    plt.figure(figsize=(10, 5))
+    k0s = np.linspace(3, 4, num_freqs)
+
+    compare_k0 = compare_k0
+    loop_through_plot_data_snrF(dft_datas, num_freqs, k0s, compare_k0, 'o')
+    loop_through_plot_data_snrF(dht_datas, num_freqs, k0s, compare_k0, '*')
+
+    legend_elements = [
+        Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
+        Line2D([0], [0], marker='*', color='w', label='DHT', markerfacecolor='k', markersize=15),
+
+        Line2D([0], [0], color=color[0], lw=4, label='L=1'),
+        Line2D([0], [0], color=color[1], lw=4, label='L=2'),
+        Line2D([0], [0], color=color[2], lw=4, label='L=5'),
+        Line2D([0], [0], color=color[3], lw=4, label='L=10'),
+    ]
+
+    plt.grid()
+    plt.xlabel('$SNR_T$' + '(dB)', fontsize=15)
+    plt.ylabel('$SNR_F$' + '(dB)', fontsize=15)
+
+    plt.tick_params('both', labelsize=15)
+    plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=1)
+    plt.savefig('/home/hgeng4/pmsp/plots/snr_f_snr_t.png')
     plt.clf()
     plt.close()
 
@@ -222,4 +274,5 @@ if __name__ == '__main__':
         dft_datas.append(dft_plot_data)
         dht_datas.append(dht_plot_data)
 
-    compare(dft_datas, dht_datas, compare_k0)
+    compare_tpr(dft_datas, dht_datas, compare_k0)
+    compare_snrF(dft_datas, dht_datas, compare_k0)
