@@ -85,7 +85,8 @@ if __name__ == '__main__':
     #
     #     print('plotting results in {}'.format(result_dir))
     #     plot_auc_roc_single_experiment(result_dir, '*tar')
-
+    print(result_dirs[0])
+    assert 1==2
     pool = Pool(processes=32)
     s = time.time()
     print('staring at', datetime.now())
