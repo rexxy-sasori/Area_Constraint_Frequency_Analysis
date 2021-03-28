@@ -69,7 +69,7 @@ class InputSignalGenerator:
             ret += amp * np.cos(2 * np.pi * freq * self.t + phase)
 
         # normalize the signal such that each block has power of 1
-        ret = self.N * self.L * ret / (ret**2).sum()
+        ret = self.N * self.N * self.L * ret / (ret**2).sum()
         ret = dsputils.reformat(ret, self.observation_block_size, self.hop_size, self.num_pos_sample)
         return ret
 
