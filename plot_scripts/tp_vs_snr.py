@@ -174,6 +174,22 @@ def compare_snrF(dft_datas, dht_datas, compare_k0=3):
     plt.close()
 
 
+def get_output_noise_power(Ls, noise_levels, N=16, kernel='fft'):
+    k0s = np.linspace(3, 4, 5)
+    freq_o = 0
+    ret = np.zeros((len(Ls), len(k0s), len(noise_levels)))
+
+    for lidx, l in enumerate(Ls):
+        for kidx, k0s in enumerate(k0s):
+            for nidx, noise_level in enumerate(noise_levels):
+                ret[lidx, kidx, nidx] = signal_generator.get_output_noise_power(
+                    freq_o, noise_level=noise_level, kernel=kernel, fs=2000, N=N, L=l
+                )
+
+    return ret
+
+
+
 class PlotData:
     def __init__(self, noise_levels, tprs, freqs,
                  compute_output_power, how_often=25,
@@ -220,7 +236,7 @@ if __name__ == '__main__':
             compute_output_power=out_power_fft, how_often=25,
             fpr_subj=0.05, N=16, fs=2000, L=l, method='DFT'
         )
-
+        print(freqs_fft)
         dht_plot_data = PlotData(
             noise_levels=noise_levels_fht, tprs=tprs_fht, freqs=freqs_fht,
             compute_output_power=out_power_fht, how_often=25,
