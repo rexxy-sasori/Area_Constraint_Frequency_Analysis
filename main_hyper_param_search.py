@@ -52,7 +52,7 @@ def experiment(usr_configs_template, hyper_param):
     usr_configs_template.detection.name = hyper_param.detection_method
 
     usr_configs_template.result_dir = os.path.join(
-        '/home/hgeng4/PMSP/results',
+        '/home/hgeng4/THESIS/results',
         'Fmethod_{}'.format(hyper_param.freq_transform_method),
         'detection_{}'.format(hyper_param.detection_method),
         'phi_{}'.format(hyper_param.phi),
