@@ -8,7 +8,7 @@ from scipy.interpolate import interp1d
 
 from core import utils, signal_generator
 
-
+color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 def find_tp_rate(result, search_fpr=0.1):
     roc = result.roc
     roc_func = interp1d(roc.fpr, roc.tpr)
@@ -118,7 +118,7 @@ def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == freq_compare:
                 plt.plot(-10 * np.log10(data.noise_levels), data.tprs[:, idx],
-                         marker=marker, markersize=8,
+                         marker=marker, markersize=8, color=color[lidx],
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
