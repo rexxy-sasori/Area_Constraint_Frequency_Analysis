@@ -112,13 +112,13 @@ def plot_tpr_vs_noise_level(
     plt.close()
 
 
-def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3):
+def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
     for lidx, l in enumerate([1,2,5,10]):
         data = datas[lidx]
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == freq_compare:
                 plt.plot(-10 * np.log10(data.noise_levels), data.tprs[:, idx],
-                         marker='o', markersize=5,
+                         marker=marker, markersize=5,
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
@@ -129,8 +129,8 @@ def compare(dft_datas, dht_datas):
     k0s = np.linspace(3, 4, num_freqs)
 
     compare_k0 = 3.25
-    loop_through_plot_data(dft_datas, num_freqs, k0s, compare_k0)
-    loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0)
+    loop_through_plot_data(dft_datas, num_freqs, k0s, compare_k0, 'o')
+    loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     plt.grid()
     plt.xlabel('$SNR_T$'+'(dB)', fontsize=15)
