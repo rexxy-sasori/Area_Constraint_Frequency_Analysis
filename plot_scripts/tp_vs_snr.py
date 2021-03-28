@@ -182,6 +182,7 @@ def get_all_output_noise_power(Ls, noise_levels, freq_os, N=16, kernel='fft'):
     for lidx, l in enumerate(Ls):
         for fidx, f0s in enumerate(freq_os):
             for nidx, noise_level in enumerate(noise_levels):
+                print(l, f0s, noise_level)
                 ret[lidx, fidx, nidx] = signal_generator.get_output_noise_power(
                     f0s, noise_level=noise_level, kernel=kernel, fs=2000, N=N, L=l
                 )
