@@ -9,19 +9,19 @@ from struct import pack
 from IO import config
 
 HOSTS = [
-    # 'csl-411-05.csl.illinois.edu',
-    # 'csl-411-06.csl.illinois.edu',
+    #'csl-411-05.csl.illinois.edu',
+    #'csl-411-06.csl.illinois.edu',
     #
-    # 'csl-411-07.csl.illinois.edu',
-    # 'csl-411-08.csl.illinois.edu',
+    #'csl-411-07.csl.illinois.edu',
+    #'csl-411-08.csl.illinois.edu',
     #
-    'csl-411-09.csl.illinois.edu',
+    #'csl-411-09.csl.illinois.edu',
     #'csl-411-10.csl.illinois.edu',
     #
     #'csl-411-13.csl.illinois.edu',
-    'csl-411-14.csl.illinois.edu',
+    #'csl-411-14.csl.illinois.edu',
 
-    #'aristotle.csl.illinois.edu'
+    'aristotle.csl.illinois.edu'
 ]
 
 PORT = 55558

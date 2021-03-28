@@ -226,10 +226,10 @@ if __name__ == '__main__':
         L]
 
     dft_datas, dht_datas = [], []
-    fft_noise_power = np.load('fft_noise_power.npy') if os.path.exists('fft_noise_power.npy') else None
-    fht_noise_power = np.load('fht_noise_power.npy') if os.path.exists('fht_noise_power.npy') else None
-    jdht_noise_power = np.load('jdht_noise_power.npy') if os.path.exists('jdht_noise_power.npy') else None
-    ddht_noise_power = np.load('ddht_noise_power.npy') if os.path.exists('ddht_noise_power.npy') else None
+    fft_noise_power = np.load('fft_noise_power.npy', allow_pickle=False) if os.path.exists('fft_noise_power.npy') else None
+    fht_noise_power = np.load('fht_noise_power.npy', allow_pickle=False) if os.path.exists('fht_noise_power.npy') else None
+    jdht_noise_power = np.load('jdht_noise_power.npy', allow_pickle=False) if os.path.exists('jdht_noise_power.npy') else None
+    ddht_noise_power = np.load('ddht_noise_power.npy', allow_pickle=False) if os.path.exists('ddht_noise_power.npy') else None
 
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
