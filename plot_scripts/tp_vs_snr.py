@@ -118,7 +118,7 @@ def compare(dft_datas, dht_datas):
     plt.figure(figsize=(10, 5))
     k0s = np.linspace(3, 4, num_freqs)
 
-    for l in [1,2,5,10]:
+    for l in enumerate([1,2,5,10]):
         dft_data = dft_datas[l]
         dht_data = dht_datas[l]
         for idx, f in enumerate(range(num_freqs)):
