@@ -127,6 +127,7 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
             if k0s[idx] == freq_compare:
                 try:
                     input_snr = - 10 * np.log10(data.noise_levels)
+                    print(data.compute_output_power)
                     output_snr = data.compute_output_power[0,:]/data.compute_output_power[1,:]
                     output_snr = 10*np.log10(output_snr)
                 except FloatingPointError:
