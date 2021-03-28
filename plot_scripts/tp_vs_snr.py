@@ -130,7 +130,7 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
 
                     output_signal_power = data.compute_output_power
                     output_noise_power = noise_power[lidx, idx, :]
-                    output_snr = 10*np.log10(output_signal_power/output_noise_power)
+                    output_snr = 10*np.log10(output_signal_power[idx]/output_noise_power)
                 except FloatingPointError:
                     continue
 
