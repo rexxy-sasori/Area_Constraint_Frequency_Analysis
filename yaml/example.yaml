@@ -1,11 +1,11 @@
 seed: 931910
-result_dir: ~
+result_dir: /Users/rexsasori/DEVDATA/PMSP/EXAMPLE
 signal:
   fs: 2000
   num_pos_decision: 10000
   block_size: 16
-  num_blocks_avg: 2
-  hop_size: 32
+  num_blocks_avg: 1
+  hop_size: 16
   freqs: [ 375 ]
   phases: [ 0 ]
   amps: [ 1 ]
@@ -16,7 +16,7 @@ noise:
     steady_state: 0.5
     top: 0.5
 freq_transform_method:
-  name: 'fft'
+  name: 'fht_jitter'
 detection:
   name: 'ml'
   init_args: ~

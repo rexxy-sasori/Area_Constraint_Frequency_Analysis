@@ -63,7 +63,7 @@ def experiment(usr_configs_template, hyper_param):
 
     N = usr_configs_template.signal.block_size
     fs = usr_configs_template.signal.fs
-    test_k = np.linspace(3, 4, 101)
+    test_k = np.linspace(3, 4, 5)
     test_f = test_k / N * fs
 
     if os.path.exists(usr_configs_template.result_dir):

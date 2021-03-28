@@ -1,7 +1,7 @@
 import numpy as np
 from numba import njit
 
-from core.utils import filter_data
+from core.utils import filter_data, uniform_sign_quant
 
 
 @njit
@@ -65,6 +65,7 @@ def dft_direct_dp_bin(seq, len_seq, coeff, qps=False, bps=0, cps=0):
     for idx in range(len_seq):
         total = coeff[idx] * seq[idx] + total
 
+
     return total
 
 
@@ -83,7 +84,7 @@ def dht_dft_bin(seq, length, coeff, qps=False, bps=0, cps=0):
     total = 0
     for idx in range(length):
         total = total + coeff[idx] * seq[idx]
-
+        total = uniform_sign_quant(total, bps, cps, qps)
     return total
 
 
@@ -108,6 +109,7 @@ def dht_direct_dp_bin(seq, len_seq, coeff, qps=False, bps=0, cps=0):
     total = 0
     for idx in range(len_seq):
         total = coeff[idx] * seq[idx] + total
+        #total = uniform_sign_quant(total, bps, cps, qps)
 
     return total
 
@@ -285,6 +287,7 @@ def dht_coeff_gaussian(block_size):
 
     coeffs = np.random.normal(0, np.sqrt(10), size=(block_size, block_size))
     return coeffs
+
 
 
 __COEFFS__ = {

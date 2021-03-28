@@ -1,7 +1,17 @@
 import numpy as np
 from scipy.signal import butter, lfilter
+from numba import njit
+from numba import jit, njit
+from numba.types import float64, int64
+import numpy as np
+import torch
 
 pi = np.pi
+MICROSECONDS_IN_SECONDS = 1E6
+
+
+def format_float(num, digits='{: .3f}'):
+    return digits.format(num)
 
 
 def reformat(arr, block_size, hop_size, num_sample):
@@ -115,94 +125,25 @@ def round_idx(float):
         return int(floor)
 
 
-def dft_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    omega_o = 2 * pi * freq_o / fs
-
-    def get_left_pulse(omega_o, bin_idx, N):
-        if omega_o == 2 * pi * bin_idx / N:
-            return 0
-
-        left_center = omega_o + 2 * pi * bin_idx / N
-        mag = np.sin(N * left_center / 2) / np.sin(left_center / 2) / 2
-        sqmag = mag ** 2
-
-        return sqmag
-
-    def get_right_pulse(omega_o, bin_idx, N):
-        if omega_o == 2 * pi * bin_idx / N:
-            return (N / 2) ** 2
-
-        right_center = omega_o - 2 * pi * bin_idx / N
-        mag = np.sin(N * right_center / 2) / np.sin(right_center / 2) / 2
-        sqmag = mag ** 2
-
-        return sqmag
-
-    def get_cross(omega_o, bin_idx, N, phi, l):
-        if omega_o == 2 * pi * bin_idx / N:
-            return 0
-
-        factor_num = 1 - np.cos(N * omega_o)
-        factor_denom = 2 * (np.cos(2 * pi * bin_idx / N) - np.cos(omega_o))
-        factor = factor_num - factor_denom
-        return factor * np.cos((N - 1) * omega_o + 2 * phi + 2 * l * N)
-
-    bin_idx = round_idx(freq_o * N / fs)
-    left = get_left_pulse(omega_o, bin_idx, N)
-    right = get_right_pulse(omega_o, bin_idx, N)
-
-    cross = np.mean(np.array([get_cross(omega_o, bin_idx, N, phi, l) for l in range(L)]))
-
-    return (left + right + cross) / N ** 2
+def db_to_linear(db):
+    return 10 ** (db / 10)
 
 
-def dht_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    dft_power = dft_output_signal_power(freq_o, phi, fs, N, L)
-    omega_o = 2 * pi * freq_o / fs
-    bin_idx = round_idx(freq_o * N / fs)
-
-    def get_right_error(omega_o, bin_idx, N, phi, l):
-        if omega_o == 2 * pi * bin_idx / N:
-            return -(N / 2) ** 2 * np.sin(2 * phi)
-
-        right_center = omega_o - 2 * pi * bin_idx / N
-        mag = np.sin(N * right_center / 2) / np.sin(right_center / 2) / 2
-        sqmag = mag ** 2
-        return -sqmag * np.sin((N - 1) * right_center + 2 * phi + 2 * omega_o * N * l)
-
-    def get_left_error(omega_o, bin_idx, N, phi, l):
-        if omega_o == 2 * pi * bin_idx / N:
-            return 0
-        left_center = omega_o + 2 * pi * bin_idx / N
-        mag = np.sin(N * left_center / 2) / np.sin(left_center / 2) / 2
-        sqmag = mag ** 2
-        return sqmag * np.sin((N - 1) * left_center + 2 * phi + 2 * omega_o * N * l)
-
-    def get_cross(omega_o, bin_idx, N):
-        top = np.sin(2 * pi * bin_idx / N) * (1 - np.cos(N * omega_o))
-        bottom = 2 * (np.cos(2 * pi * bin_idx / N) - np.cos(omega_o))
-        return -top / bottom
-
-    left_error = np.mean(np.array([get_left_error(omega_o, bin_idx, N, phi, l) for l in range(L)]))
-    right_error = np.mean(np.array([get_right_error(omega_o, bin_idx, N, phi, l) for l in range(L)]))
-    cross = get_cross(omega_o, bin_idx, N)
-    total_error = (left_error + right_error + cross) / N ** 2
-
-    return dft_power + total_error
+def get_delta(b, max_val):
+    return max_val * 2 ** (1 - b)
 
 
-def dht_jitter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    return 0
+@jit(float64[:](float64[:], int64, float64[:]), nopython=True)
+def rnd(x, decimals, out):
+    return np.round_(x, decimals, out)
 
 
-def dht_ditter_output_signal_power(freq_o, phi, fs=2000, N=16, L=1):
-    return 0
+def unisign_quant(data, n_bits, clip):
+    data = torch.Tensor(data)
+    w_c = data.clamp(-clip, clip)
+    b = torch.pow(torch.tensor(2.0), 1 - n_bits)
+    w_q = clip * torch.min(b * torch.round(w_c / (b * clip)), 1 - b)
 
+    return w_q.numpy()
 
-__SIGNAL_POWER__={
-    'fft': dft_output_signal_power,
-    'fht': dht_output_signal_power,
-    'fht_jitter': dht_jitter_output_signal_power,
-    'fht_ditter': dht_ditter_output_signal_power
-}
 
