@@ -226,8 +226,11 @@ if __name__ == '__main__':
         L]
 
     dft_datas, dht_datas = [], []
-    fft_noise_power = None
-    fht_noise_power = None
+    fft_noise_power = np.load('fft_noise_power.npy') if os.path.exists('fft_noise_power.npy') else None
+    fht_noise_power = np.load('fht_noise_power.npy') if os.path.exists('fht_noise_power.npy') else None
+    jdht_noise_power = np.load('jdht_noise_power.npy') if os.path.exists('jdht_noise_power.npy') else None
+    ddht_noise_power = np.load('ddht_noise_power.npy') if os.path.exists('ddht_noise_power.npy') else None
+
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
         noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirnames[idx], fpr_subj, 'fht')
@@ -249,8 +252,14 @@ if __name__ == '__main__':
         dft_datas.append(dft_plot_data)
         dht_datas.append(dht_plot_data)
 
-    fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft')
-    fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht')
+    fft_noise_power = get_all_output_noise_power(L, noise_levels_fft, freqs_fft, N, 'fft') if fft_noise_power is None
+    fht_noise_power = get_all_output_noise_power(L, noise_levels_fht, freqs_fht, N, 'fht') if fht_noise_power is None
+
+    np.save('fft_noise_power.npy', fft_noise_power)
+    np.save('fht_noise_power.npy', fht_noise_power)
+    np.save('jdht_noise_power.npy', jdht_noise_power)
+    np.save('ddht_noise_power.npy', ddht_noise_power)
+
 
     compare_tpr(dft_datas, dht_datas, compare_k0)
     compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_power)
