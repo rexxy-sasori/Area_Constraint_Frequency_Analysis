@@ -8,7 +8,20 @@ from scipy.interpolate import interp1d
 
 from core import utils, signal_generator
 
-color = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+color = [
+    '#1f77b4',
+    '#ff7f0e',
+    '#2ca02c',
+    '#d62728',
+    '#9467bd',
+    '#8c564b',
+    '#e377c2',
+    '#7f7f7f',
+    '#bcbd22',
+    '#17becf'
+]
+
+
 def find_tp_rate(result, search_fpr=0.1):
     roc = result.roc
     roc_func = interp1d(roc.fpr, roc.tpr)
@@ -113,7 +126,7 @@ def plot_tpr_vs_noise_level(
 
 
 def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
-    for lidx, l in enumerate([1,2,5,10]):
+    for lidx, l in enumerate([1, 2, 5, 10]):
         data = datas[lidx]
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == freq_compare:
@@ -122,7 +135,7 @@ def loop_through_plot_data(datas, num_freqs, k0s, freq_compare=3, marker='*'):
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
-def compare(dft_datas, dht_datas, compare_k0 = 3):
+def compare(dft_datas, dht_datas, compare_k0=3):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
@@ -133,7 +146,7 @@ def compare(dft_datas, dht_datas, compare_k0 = 3):
     loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     plt.grid()
-    plt.xlabel('$SNR_T$'+'(dB)', fontsize=15)
+    plt.xlabel('$SNR_T$' + '(dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
 
     plt.tick_params('both', labelsize=15)
@@ -163,20 +176,26 @@ if __name__ == '__main__':
     fpr_subj = 0.0001
     fs = 2000
     N = 16
-    L = [1,2,5,10]
+    L = [1, 2, 5, 10]
     compare_k0 = 3
 
-    fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
-    fht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
-    jdht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht_jitter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
-    ddht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in L]
+    fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
+                    in L]
+    fht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
+                    in L]
+    jdht_dirnames = [
+        '/home/hgeng4/THESIS/results/Fmethod_fht_jitter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in
+        L]
+    ddht_dirnames = [
+        '/home/hgeng4/THESIS/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in
+        L]
 
     dft_datas, dht_datas = [], []
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
         noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirnames[idx], fpr_subj, 'fht')
-        #noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
-        #noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
+        # noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
+        # noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
 
         dft_plot_data = PlotData(
             noise_levels=noise_levels_fft, tprs=tprs_fft, freqs=freqs_fft,
@@ -194,4 +213,3 @@ if __name__ == '__main__':
         dht_datas.append(dht_plot_data)
 
     compare(dft_datas, dht_datas, compare_k0)
-
