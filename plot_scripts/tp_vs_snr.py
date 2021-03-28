@@ -182,6 +182,8 @@ class PlotData:
         self.tprs = tprs
         self.freqs = freqs
         self.compute_output_power = compute_output_power
+        print(self.compute_output_power)
+        assert 1==2
         self.how_often = how_often
         self.fpr_subj = fpr_subj
         self.N = N
