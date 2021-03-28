@@ -146,7 +146,7 @@ def compare(dft_datas, dht_datas, compare_k0=3):
     loop_through_plot_data(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     legend_elements = [
-        Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
         Line2D([0], [0], marker='*', color='w', label='DHT', markerfacecolor='k', markersize=15),
 
         Line2D([0], [0], color=color[0], lw=4, label='L=1'),
@@ -160,7 +160,7 @@ def compare(dft_datas, dht_datas, compare_k0=3):
     plt.ylabel('$p_{tp}$', fontsize=15)
 
     plt.tick_params('both', labelsize=15)
-    plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=2)
+    plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=1)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
     plt.clf()
     plt.close()
