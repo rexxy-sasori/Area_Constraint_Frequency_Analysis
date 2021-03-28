@@ -76,7 +76,7 @@ def plot_auc_roc_single_experiment(result_dir):
 
 
 if __name__ == '__main__':
-    result_dirs = glob.glob('/home/hgeng4/PMSP/results/*/*/*/*/*/*')
+    result_dirs = glob.glob('/home/hgeng4/THESIS/results/*/*/*/*/*/*')
     # for result_dir in result_dirs:
     #     if 'noise_level_0' in result_dir:
     #         continue
