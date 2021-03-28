@@ -55,6 +55,7 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
         noise_level_tprs[noise_level] = []
         for r in results:
             tpr = find_tp_rate(r, search_fpr)
+            print(tpr)
             noise_level_tprs[noise_level].append(tpr)
 
     noise_levels = sorted(noise_levels)
@@ -123,7 +124,7 @@ def compare(dft_datas, dht_datas):
         dht_data = dht_datas[lidx]
         for idx, f in enumerate(range(num_freqs)):
             if k0s[idx] == 3:
-                print(dft_data.tprs)
+                #print(dft_data.tprs)
                 plt.plot(-10 * np.log10(dft_data.noise_levels), dft_data.tprs[:, idx],
                          marker='o', markersize=5,
                          label='$L=$' + str(l) + ', ' + dft_data.method)
