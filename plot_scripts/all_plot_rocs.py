@@ -47,8 +47,8 @@ def plot_roc_area(results, roc_name, auc_name):
 
 
 def plot_auc_roc_single_experiment(result_dir):
-    if 'noise_level_0.1' in result_dir:
-        return
+    # if 'noise_level_0.1' in result_dir:
+    #     return
 
     results_identifier = os.path.join(result_dir, '*tar')
     result_paths = glob.glob(results_identifier)
@@ -86,8 +86,8 @@ if __name__ == '__main__':
     #     print('plotting results in {}'.format(result_dir))
     #     plot_auc_roc_single_experiment(result_dir, '*tar')
     print(result_dirs[0])
-    assert 1==2
-    pool = Pool(processes=32)
+
+    pool = Pool(processes=1)
     s = time.time()
     print('staring at', datetime.now())
     for _ in tqdm(pool.map(plot_auc_roc_single_experiment, result_dirs), total=len(result_dirs)):
