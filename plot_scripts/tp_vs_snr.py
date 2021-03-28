@@ -160,7 +160,7 @@ class PlotData:
 
 
 if __name__ == '__main__':
-    fpr_subj = 0.01
+    fpr_subj = 0.001
     fs = 2000
     N = 16
     L = [1,2,5,10]
