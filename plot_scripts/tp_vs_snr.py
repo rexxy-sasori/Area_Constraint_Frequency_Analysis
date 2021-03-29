@@ -101,7 +101,7 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
-        Line2D([0], [0], marker='*', color='w', label='DHT', markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='*', color='w', label='D-DHT', markerfacecolor='k', markersize=15),
 
         Line2D([0], [0], color=color[0], lw=4, label='L=1'),
         Line2D([0], [0], color=color[1], lw=4, label='L=2'),
