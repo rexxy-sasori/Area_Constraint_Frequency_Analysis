@@ -101,7 +101,7 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
-        Line2D([0], [0], marker='*', color='w', label='D-DHT', markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='*', color='w', label='J-DHT', markerfacecolor='k', markersize=15),
 
         Line2D([0], [0], color=color[0], lw=4, label='L=1'),
         Line2D([0], [0], color=color[1], lw=4, label='L=2'),
@@ -233,7 +233,7 @@ if __name__ == '__main__':
 
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
-        noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(ddht_dirnames[idx], fpr_subj, 'fht_ditter')
+        noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(jdht_dirnames[idx], fpr_subj, 'fht_jitter')
         # noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
         # noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
 
