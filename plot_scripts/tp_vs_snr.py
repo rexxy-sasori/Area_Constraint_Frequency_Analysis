@@ -233,7 +233,7 @@ if __name__ == '__main__':
 
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
-        noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirnames[idx], fpr_subj, 'fht_ditter')
+        noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(ddht_dirnames[idx], fpr_subj, 'fht_ditter')
         # noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
         # noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
 
