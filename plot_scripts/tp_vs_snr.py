@@ -246,7 +246,7 @@ if __name__ == '__main__':
         dht_plot_data = PlotData(
             noise_levels=noise_levels_fht, tprs=tprs_fht, freqs=freqs_fht,
             compute_output_power=out_power_fht, how_often=25,
-            fpr_subj=0.05, N=16, fs=2000, L=l, method='D-DHT'
+            fpr_subj=0.05, N=16, fs=2000, L=l, method='J-DHT'
         )
 
         dft_datas.append(dft_plot_data)
