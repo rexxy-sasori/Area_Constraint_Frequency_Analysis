@@ -100,8 +100,8 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
     loop_through_plot_data_tpr(dht_datas, num_freqs, k0s, compare_k0, '*')
 
     legend_elements = [
-        Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
-        Line2D([0], [0], marker='*', color='w', label='J-DHT', markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='o', color='w', label=dft_datas[0].method, markerfacecolor='k', markersize=8),
+        Line2D([0], [0], marker='*', color='w', label=dht_datas[0].method, markerfacecolor='k', markersize=15),
 
         Line2D([0], [0], color=color[0], lw=4, label='L=1'),
         Line2D([0], [0], color=color[1], lw=4, label='L=2'),
@@ -110,7 +110,7 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
     ]
 
     plt.grid()
-    plt.xlabel('$SNR_T$' + '(dB)', fontsize=15)
+    plt.xlabel('Input SNR (dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
 
     plt.tick_params('both', labelsize=15)
