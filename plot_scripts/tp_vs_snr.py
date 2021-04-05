@@ -111,10 +111,10 @@ def compare_tpr(dft_datas, dht_datas, compare_k0 =3):
     ]
 
     plt.grid()
-    plt.xlabel('Input SNR (dB)', fontsize=15)
-    plt.ylabel('$p_{tp}$', fontsize=15)
+    plt.xlabel('Input SNR (dB)', fontsize=20)
+    plt.ylabel('$p_{tp}$', fontsize=20)
     plt.xlim([-10,10])
-    plt.tick_params('both', labelsize=15)
+    plt.tick_params('both', labelsize=20)
     plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=1)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
     plt.clf()
