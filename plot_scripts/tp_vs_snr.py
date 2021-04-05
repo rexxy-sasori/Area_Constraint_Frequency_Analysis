@@ -89,7 +89,7 @@ def loop_through_plot_data_tpr(datas, num_freqs, k0s, freq_compare=3, marker='*'
                          label='$L=$' + str(l) + ', ' + data.method)
 
 
-def compare_tpr(dft_datas, dht_datas, compare_k0=3):
+def compare_tpr(dft_datas, dht_datas, compare_k0 =3):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
@@ -97,11 +97,11 @@ def compare_tpr(dft_datas, dht_datas, compare_k0=3):
 
     compare_k0 = compare_k0
     loop_through_plot_data_tpr(dft_datas, num_freqs, k0s, compare_k0, 'o')
-    loop_through_plot_data_tpr(dht_datas, num_freqs, k0s, compare_k0, '*')
+    loop_through_plot_data_tpr(dht_datas, num_freqs, k0s, compare_k0, 's')
 
     legend_elements = [
         Line2D([0], [0], marker='o', color='w', label=dft_datas[0].method, markerfacecolor='k', markersize=8),
-        Line2D([0], [0], marker='*', color='w', label=dht_datas[0].method, markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='s', color='w', label=dht_datas[0].method, markerfacecolor='k', markersize=15),
 
         Line2D([0], [0], color=color[0], lw=4, label='L=1'),
         Line2D([0], [0], color=color[1], lw=4, label='L=2'),
@@ -144,7 +144,7 @@ def loop_through_plot_data_snrF(datas, num_freqs, k0s, freq_compare=3, marker='*
                 )
 
 
-def compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_power):
+def compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_power, name1, name2):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
     plt.figure(figsize=(10, 5))
@@ -156,8 +156,8 @@ def compare_snrF(dft_datas, dht_datas, compare_k0, fft_noise_power, fht_noise_po
         loop_through_plot_data_snrF(dht_datas, num_freqs, k0s, compare_k0, '*', fht_noise_power)
 
     legend_elements = [
-        Line2D([0], [0], marker='o', color='w', label='DFT', markerfacecolor='k', markersize=8),
-        Line2D([0], [0], marker='*', color='w', label='DHT', markerfacecolor='k', markersize=15),
+        Line2D([0], [0], marker='o', color='w', label=name1, markerfacecolor='k', markersize=8),
+        Line2D([0], [0], marker='*', color='w', label=name2, markerfacecolor='k', markersize=15),
 
         Line2D([0], [0], color=color[0], lw=4, label='L=1'),
         Line2D([0], [0], color=color[1], lw=4, label='L=2'),
@@ -214,6 +214,7 @@ if __name__ == '__main__':
     L = [1, 2, 5, 10]
     compare_k0 = 3
 
+
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
                     in L]
     fht_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fht/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
@@ -225,6 +226,10 @@ if __name__ == '__main__':
         '/home/hgeng4/THESIS/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in
         L]
 
+    compare_dirs = fht_dirnames
+    compare_kernels = 'fht'
+    legend_name = 'DHT'
+
     dft_datas, dht_datas = [], []
     fft_noise_power = np.load('fft_noise_power.npy', allow_pickle=True) if os.path.exists('fft_noise_power.npy') else None
     fht_noise_power = np.load('fht_noise_power.npy', allow_pickle=True) if os.path.exists('fht_noise_power.npy') else None
@@ -233,7 +238,7 @@ if __name__ == '__main__':
 
     for idx, l in enumerate(L):
         noise_levels_fft, tprs_fft, freqs_fft, out_power_fft = tp_vs_snr(fft_dirnames[idx], fpr_subj, 'fft')
-        noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(fht_dirnames[idx], fpr_subj, 'fht')
+        noise_levels_fht, tprs_fht, freqs_fht, out_power_fht = tp_vs_snr(compare_dirs[idx], fpr_subj, compare_kernels)
         # noise_levels_jdht, tprs_jdht, freqs_jdht, out_power_jdht = tp_vs_snr(jdht_dirnames[l], fpr_subj, 'fht_jitter')
         # noise_levels_ddht, tprs_ddht, freqs_ddht, out_power_ddht = tp_vs_snr(ddht_dirnames[l], fpr_subj, 'fht_ditter')
 
@@ -246,7 +251,7 @@ if __name__ == '__main__':
         dht_plot_data = PlotData(
             noise_levels=noise_levels_fht, tprs=tprs_fht, freqs=freqs_fht,
             compute_output_power=out_power_fht, how_often=25,
-            fpr_subj=0.05, N=16, fs=2000, L=l, method='DHT'
+            fpr_subj=0.05, N=16, fs=2000, L=l, method=legend_name
         )
 
         dft_datas.append(dft_plot_data)
