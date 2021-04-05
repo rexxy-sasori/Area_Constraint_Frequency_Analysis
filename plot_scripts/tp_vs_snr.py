@@ -93,7 +93,7 @@ def loop_through_plot_data_tpr(datas, num_freqs, k0s, freq_compare=3, marker='*'
 def compare_tpr(dft_datas, dht_datas, compare_k0 =3):
     num_freqs = dft_datas[0].tprs.shape[1]
     print(num_freqs)
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 7))
     k0s = np.linspace(3, 4, num_freqs)
 
     compare_k0 = compare_k0
@@ -213,7 +213,7 @@ if __name__ == '__main__':
     fs = 2000
     N = 16
     L = [1, 2, 5, 10]
-    compare_k0 = 3.25
+    compare_k0 = 3
 
 
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
