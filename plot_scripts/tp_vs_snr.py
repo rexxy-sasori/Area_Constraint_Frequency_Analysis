@@ -49,8 +49,6 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
 
         print(noise_level_dir)
         noise_level = float(noise_level_str)
-        if (10*np.log10(noise_level) <-10) or (10*np.log10(noise_level) > -10):
-            continue
 
         noise_levels.append(noise_level)
 
@@ -115,7 +113,7 @@ def compare_tpr(dft_datas, dht_datas, compare_k0 =3):
     plt.grid()
     plt.xlabel('Input SNR (dB)', fontsize=15)
     plt.ylabel('$p_{tp}$', fontsize=15)
-
+    plt.xlim([-10,10])
     plt.tick_params('both', labelsize=15)
     plt.legend(handles=legend_elements, loc='best', fontsize=15, ncol=1)
     plt.savefig('/home/hgeng4/pmsp/plots/tpr_snr.png')
