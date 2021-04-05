@@ -227,9 +227,9 @@ if __name__ == '__main__':
         '/home/hgeng4/THESIS/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in
         L]
 
-    compare_dirs = ddht_dirnames
-    compare_kernels = 'fht_ditter'
-    legend_name = 'D-DHT'
+    compare_dirs =jdht_dirnames
+    compare_kernels = 'fht_jitter'
+    legend_name = 'J-DHT'
 
     dft_datas, dht_datas = [], []
     fft_noise_power = np.load('fft_noise_power.npy', allow_pickle=True) if os.path.exists('fft_noise_power.npy') else None
