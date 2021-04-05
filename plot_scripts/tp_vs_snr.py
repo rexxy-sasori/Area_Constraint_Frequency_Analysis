@@ -49,6 +49,9 @@ def tp_vs_snr(parent_dir, search_fpr=0.1, method='fft'):
 
         print(noise_level_dir)
         noise_level = float(noise_level_str)
+        if (10*np.log10(noise_level) <-10) or (10*np.log10(noise_level) > -10):
+            continue
+
         noise_levels.append(noise_level)
 
         result_paths = glob.glob(os.path.join(noise_level_dir, '*tar'))
@@ -212,7 +215,7 @@ if __name__ == '__main__':
     fs = 2000
     N = 16
     L = [1, 2, 5, 10]
-    compare_k0 = 3
+    compare_k0 = 3.25
 
 
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
