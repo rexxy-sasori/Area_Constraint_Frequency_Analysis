@@ -227,7 +227,7 @@ if __name__ == '__main__':
         '/home/hgeng4/THESIS/results/Fmethod_fht_ditter/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l in
         L]
 
-    compare_dirs = fht_dirnames
+    compare_dirs = ddht_dirnames
     compare_kernels = 'fht_ditter'
     legend_name = 'D-DHT'
 
