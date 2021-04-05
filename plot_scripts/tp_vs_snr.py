@@ -213,7 +213,7 @@ if __name__ == '__main__':
     fs = 2000
     N = 16
     L = [1, 2, 5, 10]
-    compare_k0 = 3.25
+    compare_k0 = 3
 
 
     fft_dirnames = ['/home/hgeng4/THESIS/results/Fmethod_fft/detection_ml/phi_0.7853981633974483/N_16/L_' + str(l) for l
@@ -228,8 +228,8 @@ if __name__ == '__main__':
         L]
 
     compare_dirs = fht_dirnames
-    compare_kernels = 'fht'
-    legend_name = 'DHT'
+    compare_kernels = 'fht_ditter'
+    legend_name = 'D-DHT'
 
     dft_datas, dht_datas = [], []
     fft_noise_power = np.load('fft_noise_power.npy', allow_pickle=True) if os.path.exists('fft_noise_power.npy') else None
