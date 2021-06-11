@@ -8,6 +8,7 @@ import torch
 
 pi = np.pi
 MICROSECONDS_IN_SECONDS = 1E6
+MILLISECONDS_IN_SECONDS = 1E3
 
 
 def format_float(num, digits='{: .3f}'):
@@ -126,11 +127,14 @@ def round_idx(float):
 
 
 def db_to_linear(db):
-    return 10 ** (db / 10)
+    if db == -np.inf:
+        return 0
+    else:
+        return 10 ** (db / 10)
 
 
 def get_delta(b, max_val):
-    return max_val * 2 ** (1 - b)
+    return max_val * 2.0 ** (1 - b)
 
 
 @jit(float64[:](float64[:], int64, float64[:]), nopython=True)

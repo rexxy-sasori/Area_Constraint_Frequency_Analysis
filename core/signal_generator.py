@@ -69,6 +69,7 @@ class InputSignalGenerator:
             ret += amp * np.cos(2 * np.pi * freq * self.t + phase)
 
         # normalize the signal such that each block has power of 1
+        # if ret.std() != 0:
         ret = ret / ret.std()
         ret = dsputils.reformat(ret, self.observation_block_size, self.hop_size, self.num_pos_sample)
         return ret
@@ -123,7 +124,7 @@ def get_output_signal(L, N, freq_o, fs, phi, kernel='fft', transform=False):
     return input_signal, observations
 
 
-def get_output_noise(L, N, noise_level, kernel='fft', transform=False):
+def get_output_composite(freq_o, phase, L, N, noise_level, kernel='fft', transform=False):
     signal_configs = UsrConfigs({})
     noise_configs = UsrConfigs({})
     transform_configs = UsrConfigs({})
@@ -135,8 +136,8 @@ def get_output_noise(L, N, noise_level, kernel='fft', transform=False):
     setattr(signal_configs, 'block_size', N)
     setattr(signal_configs, 'num_blocks_avg', L)
     setattr(signal_configs, 'hop_size', N * L)
-    setattr(signal_configs, 'freqs', [3])
-    setattr(signal_configs, 'phases', [np.pi/4])
+    setattr(signal_configs, 'freqs', [freq_o])
+    setattr(signal_configs, 'phases', [phase])
     setattr(signal_configs, 'amps', [1])
     setattr(noise_configs, 'name', 'rvs')
     setattr(init_args, 'slope', 1)
@@ -145,11 +146,11 @@ def get_output_noise(L, N, noise_level, kernel='fft', transform=False):
     setattr(noise_configs, 'init_args', init_args)
     setattr(transform_configs, 'name', kernel)
     generator = InputSignalGenerator(signal_configs, noise_configs)
-    input_signal, _ = generator.get()
-    noise = input_signal[Nd:2*Nd, :, :]
+    input_signal, labels = generator.get()
+    noise = input_signal
     observations, _ = freq_transform.transform_all(noise, transform_configs, signal_configs) if transform else None
 
-    return input_signal, observations
+    return input_signal, observations, labels
 
 
 def get_output_signal_power(freq_o, phi, kernel, fs=2000, N=16, L=1):
